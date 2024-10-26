@@ -28,3 +28,14 @@ a {
   text-decoration: none;
   color: #495057;
 }
+
+.h-screen {
+  min-height: calc(100dvh - 69.6px);
+}
+
+.hero-heading {
+  background-image: linear-gradient(220.55deg, #ffe70b 0%, #27b643 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
