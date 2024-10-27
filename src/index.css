@@ -54,3 +54,19 @@ a {
   background-size: cover;
   background-position: center;
 }
+
+.list-group-item {
+  background: none;
+  color: white;
+  padding-inline: 0;
+  border: none;
+}
+
+.list-group-item > a {
+  font-size: 0.875rem;
+  color: #adb5bd;
+}
+
+.list-group-item > a:hover {
+  color: #f8f9fa;
+}
