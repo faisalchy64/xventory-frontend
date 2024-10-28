@@ -70,3 +70,13 @@ a {
 .list-group-item > a:hover {
   color: #f8f9fa;
 }
+
+.form {
+  width: 350px;
+}
+
+@media screen and (max-width: 576px) {
+  .form {
+    width: 100%;
+  }
+}
