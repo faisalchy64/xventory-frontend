@@ -111,7 +111,7 @@ export default function Signup() {
                     value:
                       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
                     message:
-                      "Minimum 8 characters neeeded (at least one letter, one digit and one special character).",
+                      "Minimum 8 characters needed (at least one letter, one digit and one special character).",
                   },
                 })}
               />
