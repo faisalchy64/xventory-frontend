@@ -1,9 +1,9 @@
 import { Container, Row, Col, Image, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import signin from "../assets/signin.svg";
+import forgot from "../assets/forgot.svg";
 
-export default function Signin() {
+export default function ForgotPassword() {
   const {
     register,
     formState: { errors },
@@ -22,8 +22,8 @@ export default function Signin() {
       <Row className="d-flex align-items-center g-4">
         <Col lg={6} className="d-none d-md-block">
           <Image
-            src={signin}
-            alt="Signin image"
+            src={forgot}
+            alt="Forgot password image"
             className="w-100 h-100 object-fit-contain rounded-4"
           />
         </Col>
@@ -33,7 +33,7 @@ export default function Signin() {
             className="form bg-light bg-gradient border rounded p-4 mx-auto"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <h3 className="my-0">Sign in to your account</h3>
+            <h3 className="my-0">Reset your password</h3>
 
             <Form.Group className="my-3">
               <Form.Label htmlFor="email" className="my-0">
@@ -64,41 +64,11 @@ export default function Signin() {
               )}
             </Form.Group>
 
-            <Form.Group>
-              <Form.Label htmlFor="password" className="my-0">
-                Password
-              </Form.Label>
-              <Form.Control
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                className="my-1"
-                {...register("password", {
-                  required: {
-                    value: true,
-                    message: "Password is required.",
-                  },
-                })}
-              />
+            <Link to="/signin" className="text-xs text-primary">
+              Back to the sign-in page
+            </Link>
 
-              {errors && errors.password && (
-                <Form.Text className="text-danger">
-                  {errors.password.message}
-                </Form.Text>
-              )}
-            </Form.Group>
-
-            <Form.Group className="d-flex justify-content-between my-3">
-              <Link to="/signup" className="text-xs text-primary">
-                Create new account
-              </Link>
-
-              <Link to="/forgot-password" className="text-xs text-primary">
-                Forgot password
-              </Link>
-            </Form.Group>
-
-            <Form.Group>
+            <Form.Group className="my-3">
               <Form.Control
                 type="submit"
                 value="Submit"

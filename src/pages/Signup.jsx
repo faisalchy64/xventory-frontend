@@ -18,9 +18,9 @@ export default function Signup() {
   };
 
   return (
-    <Container className="h-screen py-5">
+    <Container className="h-screen d-flex flex-column justify-content-center py-5">
       <Row className="d-flex align-items-center g-4">
-        <Col md={6} className="d-none d-md-block">
+        <Col lg={6} className="d-none d-md-block">
           <Image
             src={signup}
             alt="Signup image"
@@ -28,7 +28,7 @@ export default function Signup() {
           />
         </Col>
 
-        <Col md={6}>
+        <Col lg={6}>
           <Form
             className="form bg-light bg-gradient border rounded p-4 mx-auto"
             onSubmit={handleSubmit(onSubmit)}
