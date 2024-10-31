@@ -1,7 +1,9 @@
-import { Container, Row, Col, Image, Form } from "react-bootstrap";
+import { Container, Alert, Row, Col, Image, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import signup from "../assets/signup.svg";
+import { useMutation } from "@tanstack/react-query";
+import { signup } from "../apis/user";
+import img from "../assets/signup.svg";
 
 export default function Signup() {
   const {
@@ -10,19 +12,41 @@ export default function Signup() {
     handleSubmit,
     reset,
   } = useForm();
+  const { isPending, data, mutate, error } = useMutation({
+    mutationFn: signup,
+  });
+
+  // console.log(isPending, data, error);
 
   const onSubmit = async (data) => {
-    console.log(data);
-
+    mutate(data);
     reset();
   };
 
   return (
     <Container className="h-screen d-flex flex-column justify-content-center py-5">
+      {error && (
+        <Alert
+          variant="danger"
+          className="text-uppercase text-danger py-2 border-0"
+        >
+          {error.response ? error.response.data.message : error.message}
+        </Alert>
+      )}
+
+      {data && (
+        <Alert
+          variant="success"
+          className="text-uppercase text-success py-2 border-0"
+        >
+          {data.message} Please check your inbox or spam box.
+        </Alert>
+      )}
+
       <Row className="d-flex align-items-center g-4">
         <Col lg={6} className="d-none d-md-block">
           <Image
-            src={signup}
+            src={img}
             alt="Signup image"
             className="w-100 h-100 object-fit-contain rounded-4"
           />
@@ -157,7 +181,8 @@ export default function Signup() {
             <Form.Group className="my-3">
               <Form.Control
                 type="submit"
-                value="Submit"
+                value={isPending ? "Loading..." : "Submit"}
+                disabled={isPending}
                 className="btn bg-primary bg-gradient text-white border-0"
               />
             </Form.Group>
