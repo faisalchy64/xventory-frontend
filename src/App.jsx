@@ -1,6 +1,5 @@
 import { RouterProvider } from "react-router-dom";
 import useAuthCheck from "./hooks/useAuthCheck";
-import AuthProvider from "./components/AuthProvider";
 import Loading from "./uxs/Loading";
 import router from "./router";
 
@@ -11,9 +10,5 @@ export default function App() {
     return <Loading />;
   }
 
-  return (
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
-  );
+  return <RouterProvider router={router} />;
 }

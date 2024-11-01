@@ -1,9 +1,11 @@
 import { Container, Alert, Row, Col, Image, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
+import useAuth from "../hooks/useAuth";
 import { signup } from "../apis/user";
 import img from "../assets/signup.svg";
+import { useEffect } from "react";
 
 export default function Signup() {
   const {
@@ -15,34 +17,24 @@ export default function Signup() {
   const { isPending, data, mutate, error } = useMutation({
     mutationFn: signup,
   });
-
-  // console.log(isPending, data, error);
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+  const from = (state && state.from.pathname) || "/";
 
   const onSubmit = async (data) => {
     mutate(data);
     reset();
   };
 
+  useEffect(() => {
+    if (auth) {
+      navigate(from, { replace: true });
+    }
+  }, [auth, from, navigate]);
+
   return (
     <Container className="h-screen d-flex flex-column justify-content-center py-5">
-      {error && (
-        <Alert
-          variant="danger"
-          className="text-uppercase text-danger py-2 border-0"
-        >
-          {error.response ? error.response.data.message : error.message}
-        </Alert>
-      )}
-
-      {data && (
-        <Alert
-          variant="success"
-          className="text-uppercase text-success py-2 border-0"
-        >
-          {data.message} Please check your inbox or spam box.
-        </Alert>
-      )}
-
       <Row className="d-flex align-items-center g-4">
         <Col lg={6} className="d-none d-md-block">
           <Image
@@ -53,6 +45,24 @@ export default function Signup() {
         </Col>
 
         <Col lg={6}>
+          {error && (
+            <Alert
+              variant="danger"
+              className="form text-danger py-2 mx-auto border-0"
+            >
+              {error.response ? error.response.data.message : error.message}
+            </Alert>
+          )}
+
+          {data && (
+            <Alert
+              variant="success"
+              className="form text-success py-2 mx-auto border-0"
+            >
+              {data.message} Please check your inbox or spam box.
+            </Alert>
+          )}
+
           <Form
             className="form bg-light bg-gradient border rounded p-4 mx-auto"
             onSubmit={handleSubmit(onSubmit)}

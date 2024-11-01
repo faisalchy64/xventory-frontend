@@ -1,7 +1,11 @@
-import { Container, Row, Col, Image, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Container, Alert, Row, Col, Image, Form } from "react-bootstrap";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import signin from "../assets/signin.svg";
+import { useMutation } from "@tanstack/react-query";
+import useAuth from "../hooks/useAuth";
+import { signin } from "../apis/user";
+import img from "../assets/signin.svg";
 
 export default function Signin() {
   const {
@@ -10,25 +14,51 @@ export default function Signin() {
     handleSubmit,
     reset,
   } = useForm();
+  const { isPending, data, mutate, error } = useMutation({
+    mutationFn: signin,
+  });
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const { auth, setAuth } = useAuth();
+  const from = (state && state.from.pathname) || "/";
 
   const onSubmit = async (data) => {
-    console.log(data);
-
+    mutate(data);
     reset();
   };
+
+  useEffect(() => {
+    if (data) {
+      setAuth(data);
+      localStorage.setItem("auth", JSON.stringify(data));
+    }
+
+    if (auth) {
+      navigate(from, { replace: true });
+    }
+  }, [data, auth, setAuth, from, navigate]);
 
   return (
     <Container className="h-screen d-flex flex-column justify-content-center py-5">
       <Row className="d-flex align-items-center g-4">
         <Col lg={6} className="d-none d-md-block">
           <Image
-            src={signin}
+            src={img}
             alt="Signin image"
             className="w-100 h-100 object-fit-contain rounded-4"
           />
         </Col>
 
         <Col lg={6}>
+          {error && (
+            <Alert
+              variant="danger"
+              className="form text-danger py-2 mx-auto border-0"
+            >
+              {error.response ? error.response.data.message : error.message}
+            </Alert>
+          )}
+
           <Form
             className="form bg-light bg-gradient border rounded p-4 mx-auto"
             onSubmit={handleSubmit(onSubmit)}
@@ -101,7 +131,8 @@ export default function Signin() {
             <Form.Group>
               <Form.Control
                 type="submit"
-                value="Submit"
+                value={isPending ? "Loading..." : "Submit"}
+                disabled={isPending}
                 className="btn bg-primary bg-gradient text-white border-0"
               />
             </Form.Group>
