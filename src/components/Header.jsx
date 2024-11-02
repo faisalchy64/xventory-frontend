@@ -1,8 +1,19 @@
+import { useState, useEffect } from "react";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { useLocation, Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../hooks/useAuth";
+import { signout } from "../apis/user";
 
 export default function Header() {
+  const [run, setRun] = useState(false);
   const { pathname } = useLocation();
+  const { isLoading, data } = useQuery({
+    queryKey: ["auth"],
+    queryFn: signout,
+    enabled: run,
+  });
+  const { auth, setAuth } = useAuth();
   const uris = [
     {
       id: 1,
@@ -31,9 +42,13 @@ export default function Header() {
     },
   ];
 
-  const handleSignOut = () => {
-    console.log("Sign-out");
-  };
+  useEffect(() => {
+    if (data) {
+      setRun(false);
+      setAuth(null);
+      localStorage.removeItem("auth");
+    }
+  }, [data, setAuth]);
 
   return (
     <Navbar expand="md" className="bg-body-tertiary py-3">
@@ -44,42 +59,54 @@ export default function Header() {
         <Navbar.Toggle aria-controls="navbar" />
         <Navbar.Collapse id="navbar">
           <Nav className="navs ms-auto">
-            {uris.map((uri) => (
-              <Link
-                key={uri.id}
-                to={uri.path}
-                className={`${
-                  pathname === uri.path && "fw-semibold text-dark"
-                }`}
-              >
-                {uri.name}
-              </Link>
-            ))}
+            {uris.map((uri) => {
+              if (uri.path === "/dashboard" && auth === null) {
+                return null;
+              }
 
-            <>
-              <Link to="/signin" className="btn bg-dark bg-gradient text-white">
-                Sign-in
-              </Link>
-              <Link
-                to="/signup"
-                className="btn bg-primary bg-gradient text-white"
-              >
-                Get started
-              </Link>
-            </>
+              return (
+                <Link
+                  key={uri.id}
+                  to={uri.path}
+                  className={`${
+                    pathname === uri.path && "fw-semibold text-dark"
+                  }`}
+                >
+                  {uri.name}
+                </Link>
+              );
+            })}
 
-            <>
-              <h6 className="text-body-tertiary text-uppercase my-0">
-                | faisal |
-              </h6>
-              <Button
-                variant="danger"
-                className="bg-gradient"
-                onClick={handleSignOut}
-              >
-                Sign-out
-              </Button>
-            </>
+            {auth ? (
+              <>
+                <h6 className="text-body-tertiary fw-semibold text-uppercase my-0">
+                  | {auth && auth.name.split(" ")[0]} |
+                </h6>
+                <Button
+                  disabled={isLoading}
+                  variant="danger"
+                  className="bg-gradient"
+                  onClick={() => setRun(true)}
+                >
+                  Sign-out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/signin"
+                  className="btn bg-dark bg-gradient text-white"
+                >
+                  Sign-in
+                </Link>
+                <Link
+                  to="/signup"
+                  className="btn bg-primary bg-gradient text-white"
+                >
+                  Get started
+                </Link>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
