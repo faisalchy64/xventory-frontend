@@ -1,25 +1,37 @@
 import { Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-export default function ProductCard() {
+export default function ProductCard({ product }) {
+  const {
+    _id,
+    productName,
+    productDescription,
+    productPrice,
+    productMeasure,
+    productImage,
+  } = product;
+
   return (
     <Col md={6} lg={4}>
       <Card>
         <Card.Img
           variant="top"
-          src="https://res.cloudinary.com/faisalchy64/image/upload/f_auto,q_auto/v1/inventory-management/lbfzbblqzan7mfmh6uoc?_a=BAMAGScc0"
+          src={productImage}
+          style={{ height: "250px" }}
+          alt="Product image"
+          className="object-fit-cover"
         />
         <Card.Body>
-          <Card.Title className="text-capitalize">green apple</Card.Title>
+          <Card.Title className="text-capitalize">{productName}</Card.Title>
           <Card.Text className="text-xs text-body-secondary my-0">
-            Fresh and organic green apple.
+            {productDescription}
           </Card.Text>
-          <Card.Text className="fw-semibold text-body-secondary my-2">
-            $5.00
+          <Card.Text className="fw-semibold text-uppercase text-body-secondary my-2">
+            ${productPrice}.00 / {productMeasure}
           </Card.Text>
 
           <Link
-            to={`/products/id`}
+            to={`/products/${_id}`}
             className="btn bg-primary bg-gradient text-white"
           >
             Order Now

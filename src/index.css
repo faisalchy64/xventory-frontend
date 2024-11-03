@@ -79,6 +79,25 @@ a {
   height: 350px;
 }
 
+.animate-pulse {
+  animation: pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.bg-gray {
+  background: #d1d5db;
+  color: #d1d5db;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 @media screen and (max-width: 576px) {
   .form {
     width: 100%;
