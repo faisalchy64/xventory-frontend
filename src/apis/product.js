@@ -1,7 +1,7 @@
 import api, { apiPrivate } from "../api";
 
-export const getProducts = async () => {
-  const response = await api.get("/products");
+export const getProducts = async (page) => {
+  const response = await api.get(`/products?page=${page}`);
   return response.data;
 };
 

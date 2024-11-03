@@ -11,10 +11,8 @@ export default function ProductContainer() {
     queryFn: getProducts,
   });
 
-  console.log(isLoading, data, error);
-
   return (
-    <Container className="h-screen d-flex flex-column justify-content-center py-5">
+    <Container className="h-screen py-5">
       <h3 className="text-capitalize my-0">
         Browse, compare and order products from trusted suppliers
       </h3>
@@ -29,10 +27,7 @@ export default function ProductContainer() {
       </Row>
 
       {data && data.products.length === 0 && (
-        <Alert
-          variant="secondary"
-          className="form text-dark py-2 mx-auto my-5 border-0"
-        >
+        <Alert variant="secondary" className="text-dark py-2 my-5 border-0">
           No products found.
         </Alert>
       )}
@@ -45,7 +40,8 @@ export default function ProductContainer() {
 
       <Link
         to="/products"
-        className="btn btn-lg bg-primary bg-gradient text-white mx-auto"
+        style={{ width: "fit-content" }}
+        className="d-block btn btn-lg bg-primary bg-gradient text-white mx-auto"
       >
         See All Products
       </Link>
