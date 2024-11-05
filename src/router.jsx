@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "./layout/Main";
+import Dashboard from "./layout/Dashboard";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Product from "./pages/Product";
@@ -9,6 +10,10 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import AdminManageProducts from "./pages/AdminManageProducts";
+import AdminManageOrders from "./pages/AdminManageOrders";
+import ManageProducts from "./pages/ManageProducts";
+import ManageOrders from "./pages/ManageOrders";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +55,28 @@ const router = createBrowserRouter([
       {
         path: "/reset-password",
         element: <ResetPassword />,
+      },
+    ],
+  },
+  {
+    path: "",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "/dashboard/admin-manage-products",
+        element: <AdminManageProducts />,
+      },
+      {
+        path: "/dashboard/admin-manage-orders",
+        element: <AdminManageOrders />,
+      },
+      {
+        path: "/dashboard/manage-products",
+        element: <ManageProducts />,
+      },
+      {
+        path: "/dashboard/manage-orders",
+        element: <ManageOrders />,
       },
     ],
   },

@@ -102,4 +102,8 @@ a {
   .form {
     width: 100%;
   }
+
+  .h-screen {
+    min-height: calc(100dvh - 71.6px);
+  }
 }
