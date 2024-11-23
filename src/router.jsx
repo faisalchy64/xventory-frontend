@@ -12,8 +12,10 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AdminManageProducts from "./pages/AdminManageProducts";
 import AdminManageOrders from "./pages/AdminManageOrders";
+import AdminManageUsers from "./pages/AdminManageUsers";
 import ManageProducts from "./pages/ManageProducts";
 import ManageOrders from "./pages/ManageOrders";
+import CreateProduct from "./pages/CreateProduct";
 
 const router = createBrowserRouter([
   {
@@ -71,12 +73,20 @@ const router = createBrowserRouter([
         element: <AdminManageOrders />,
       },
       {
+        path: "/dashboard/admin-manage-users",
+        element: <AdminManageUsers />,
+      },
+      {
         path: "/dashboard/manage-products",
         element: <ManageProducts />,
       },
       {
         path: "/dashboard/manage-orders",
         element: <ManageOrders />,
+      },
+      {
+        path: "/dashboard/create-product",
+        element: <CreateProduct />,
       },
     ],
   },
