@@ -47,7 +47,7 @@ export default function Navbar() {
           </button>
 
           {show && (
-            <div className="w-60 flex md:hidden flex-col items-center gap-2.5 bg-base-100 absolute top-[120%] right-0 px-2.5 py-3.5 rounded-md shadow">
+            <div className="w-60 flex md:hidden flex-col items-center gap-2.5 bg-base-100 absolute top-[120%] right-0 px-2.5 py-3.5 z-[1000] rounded-md shadow">
               <Link
                 to="/"
                 className="btn w-full uppercase text-gray-600 bg-base-200"
