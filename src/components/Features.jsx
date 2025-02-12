@@ -12,7 +12,7 @@ export default function Features() {
         Powerful features to elevate your supply chain management
       </h2>
 
-      <div className="grid md:grid-cols-3 gap-3.5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3.5">
         <article className="card card-compact bg-base-100 shadow">
           <div className="card-body">
             <div className="w-fit bg-indigo-50 p-2.5 rounded-md">

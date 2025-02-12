@@ -7,7 +7,7 @@ export default function ProductCard() {
         <img
           src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
           alt="Shoes"
-          className="w-full h-full object-cover"
+          className="size-full object-cover"
         />
       </figure>
       <div className="card-body">

@@ -8,7 +8,7 @@ export default function ProductContainer() {
         Browse, compare and order products from trusted sellers
       </h2>
 
-      <div className="grid md:grid-cols-3 gap-3.5">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3.5">
         <ProductCard />
         <ProductCard />
         <ProductCard />
