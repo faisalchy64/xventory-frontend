@@ -37,7 +37,7 @@ export default function Navbar() {
           ))}
 
           <Link to="/signin">
-            <button className="btn btn-primary uppercase">Get Started</button>
+            <button className="btn btn-primary uppercase">Sign in</button>
           </Link>
         </div>
 
@@ -66,7 +66,7 @@ export default function Navbar() {
               ))}
 
               <Link to="/signin" className="btn btn-primary w-full uppercase">
-                Get Started
+                Sign in
               </Link>
             </div>
           )}
