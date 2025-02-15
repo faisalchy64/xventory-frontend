@@ -66,57 +66,54 @@ export default function Contact() {
             </h2>
 
             <form className="flex flex-col gap-2.5" onSubmit={handleSubmit}>
-              <div className="flex flex-col gap-0.5">
+              <div className="flex flex-col gap-1">
                 <label
                   htmlFor="name"
-                  className="text-lg font-semibold text-gray-500"
+                  className="text-base font-semibold text-gray-500"
                 >
                   Name
                 </label>
                 <input
                   type="text"
                   id="name"
-                  name="name"
                   placeholder="Enter your name"
                   autoComplete="off"
-                  className="input input-bordered w-full"
+                  className="input input-bordered w-full text-gray-500"
                 />
               </div>
 
-              <div className="flex flex-col gap-0.5">
+              <div className="flex flex-col 1">
                 <label
                   htmlFor="email"
-                  className="text-lg font-semibold text-gray-500"
+                  className="text-base font-semibold text-gray-500"
                 >
                   Email
                 </label>
                 <input
                   type="email"
                   id="email"
-                  name="email"
                   placeholder="Enter your email"
                   autoComplete="off"
-                  className="input input-bordered w-full"
+                  className="input input-bordered w-full text-gray-500"
                 />
               </div>
 
-              <div className="flex flex-col gap-0.5">
+              <div className="flex flex-col gap-1">
                 <label
                   htmlFor="message"
-                  className="text-lg font-semibold text-gray-500"
+                  className="text-base font-semibold text-gray-500"
                 >
                   Message
                 </label>
                 <textarea
                   id="message"
-                  name="message"
                   rows="5"
                   placeholder="Enter your message"
-                  className="textarea textarea-bordered text-base resize-none"
+                  className="textarea textarea-bordered text-base text-gray-500 resize-none"
                 ></textarea>
               </div>
 
-              <button className="btn btn-primary">Submit</button>
+              <button className="btn btn-primary text-base">Submit</button>
             </form>
           </div>
         </article>
