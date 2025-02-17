@@ -6,32 +6,13 @@ import products from "../assets/products.png";
 import create from "../assets/create.png";
 import orders from "../assets/orders.png";
 import users from "../assets/users.png";
+import purchase from "../assets/purchase.png";
 import profile from "../assets/profile.png";
 
 export default function Sidebar({ open, setOpen }) {
   const { pathname } = useLocation();
   const uris = {
     user: [
-      {
-        id: 1,
-        path: "/dashboard",
-        name: "Dashboard",
-        icon: dashboard,
-      },
-      {
-        id: 2,
-        path: "/dashboard/purchase-history",
-        name: "Purchase History",
-        icon: products,
-      },
-      {
-        id: 3,
-        path: "/dashboard/profile",
-        name: "Profile",
-        icon: profile,
-      },
-    ],
-    seller: [
       {
         id: 1,
         path: "/dashboard",
@@ -58,6 +39,12 @@ export default function Sidebar({ open, setOpen }) {
       },
       {
         id: 5,
+        path: "/dashboard/purchase-history",
+        name: "Purchase History",
+        icon: purchase,
+      },
+      {
+        id: 6,
         path: "/dashboard/profile",
         name: "Profile",
         icon: profile,
@@ -126,7 +113,7 @@ export default function Sidebar({ open, setOpen }) {
       </div>
 
       <div className="flex flex-col gap-2.5">
-        {uris.admin.map((uri) => (
+        {uris.user.map((uri) => (
           <Link
             key={uri.id}
             to={uri.path}

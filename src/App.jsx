@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router";
 import Main from "./layouts/Main";
+import Dashboard from "./layouts/Dashboard";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Product from "./pages/Product";
@@ -9,7 +10,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import Dashboard from "./layouts/Dashboard";
+import Root from "./pages/Root";
 
 export default function App() {
   return (
@@ -27,7 +28,7 @@ export default function App() {
       </Route>
 
       <Route element={<Dashboard />}>
-        <Route path="/dashboard" element={<h1>Dashboard</h1>} />
+        <Route path="/dashboard" element={<Root />} />
       </Route>
     </Routes>
   );
