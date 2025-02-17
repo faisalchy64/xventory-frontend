@@ -11,6 +11,9 @@ import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Root from "./pages/Root";
+import ManageProducts from "./pages/ManageProducts";
+import ManageOrders from "./pages/ManageOrders";
+import PurchaseHistory from "./pages/PurchaseHistory";
 
 export default function App() {
   return (
@@ -29,6 +32,12 @@ export default function App() {
 
       <Route element={<Dashboard />}>
         <Route path="/dashboard" element={<Root />} />
+        <Route path="/dashboard/manage-products" element={<ManageProducts />} />
+        <Route path="/dashboard/manage-orders" element={<ManageOrders />} />
+        <Route
+          path="/dashboard/purchase-history"
+          element={<PurchaseHistory />}
+        />
       </Route>
     </Routes>
   );

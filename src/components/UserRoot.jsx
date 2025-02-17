@@ -1,6 +1,6 @@
 import products from "../assets/products.png";
 import orders from "../assets/orders.png";
-import users from "../assets/users.png";
+import purchase from "../assets/purchase.png";
 
 export default function AdminRoot() {
   return (
@@ -30,9 +30,9 @@ export default function AdminRoot() {
 
         <article className="card card-compact bg-neutral shadow">
           <div className="card-body">
-            <img src={users} alt="Icon" className="size-10" />
+            <img src={purchase} alt="Icon" className="size-10" />
             <div className="flex justify-between items-center text-white">
-              <p className="text-base">Available Users</p>
+              <p className="text-base">Purchase History</p>
               <h1 className="text-2xl font-bold">1000</h1>
             </div>
           </div>
