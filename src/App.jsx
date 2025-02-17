@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Dashboard from "./layouts/Dashboard";
 
 export default function App() {
   return (
@@ -23,6 +24,10 @@ export default function App() {
         <Route path="/signin" element={<Signin />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+      </Route>
+
+      <Route element={<Dashboard />}>
+        <Route path="/dashboard" element={<h1>Dashboard</h1>} />
       </Route>
     </Routes>
   );

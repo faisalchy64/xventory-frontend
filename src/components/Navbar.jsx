@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router";
-import { Menu, X } from "lucide-react";
+import { EllipsisVertical, Menu, X } from "lucide-react";
 
-export default function Navbar() {
+export default function Navbar({ setOpen }) {
   const [show, setShow] = useState(false);
   const { pathname } = useLocation();
   const uris = ["products", "dashboard", "about", "contact"];
@@ -14,9 +14,19 @@ export default function Navbar() {
   return (
     <nav className="bg-white py-5 border-b">
       <div className="w-4/5 flex justify-between items-center mx-auto">
-        <Link to="/">
-          <h3 className="logo text-2xl font-bold">Xventory</h3>
-        </Link>
+        <div className="flex items-center gap-2.5">
+          {pathname.includes("/dashboard") && (
+            <button
+              className="btn btn-ghost lg:hidden"
+              onClick={() => setOpen(true)}
+            >
+              <EllipsisVertical className="stroke-gray-500" />
+            </button>
+          )}
+          <Link to="/">
+            <h3 className="logo text-2xl font-bold">Xventory</h3>
+          </Link>
+        </div>
 
         <div className="hidden md:flex items-center gap-2.5">
           <Link
