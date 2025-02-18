@@ -14,6 +14,7 @@ import Root from "./pages/Root";
 import ManageProducts from "./pages/ManageProducts";
 import ManageOrders from "./pages/ManageOrders";
 import PurchaseHistory from "./pages/PurchaseHistory";
+import CreateProduct from "./pages/CreateProduct";
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
           path="/dashboard/purchase-history"
           element={<PurchaseHistory />}
         />
+        <Route path="/dashboard/create-product" element={<CreateProduct />} />
       </Route>
     </Routes>
   );

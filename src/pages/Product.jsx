@@ -1,8 +1,17 @@
-import { useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { useForm } from "react-hook-form";
 
 export default function Product() {
-  const [count, setCount] = useState(0);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    reset();
+  };
 
   return (
     <section className="w-4/5 flex flex-col items-center gap-10 py-10 mx-auto">
@@ -36,34 +45,45 @@ export default function Product() {
             <p className="text-gray-500">Abc</p>
           </div>
 
-          <div className="flex items-center gap-2.5 py-2.5">
+          <div className="flex flex-col gap-2.5 py-2.5">
             <input
-              type="number"
-              min="0"
+              type="text"
+              placeholder="Enter order quantity"
               className="input input-bordered w-full text-gray-500"
-              value={count}
-              onChange={(e) => setCount(parseInt(e.target.value))}
+              {...register("quantity", {
+                required: {
+                  value: true,
+                  message: "Quantity is required.",
+                },
+                min: {
+                  value: 0,
+                  message: "Quantity cannot be negative.",
+                },
+                max: {
+                  value: 150,
+                  message: "Quantity cannot be more than 150 KG.",
+                },
+                pattern: {
+                  value: /^(?:\d+)(?:\.\d+)?$/,
+                  message: "Enter valid quantity.",
+                },
+                valueAsNumber: true,
+              })}
             />
 
-            <button
-              className="btn btn-primary"
-              onClick={() => setCount((prev) => parseInt(prev) + 1)}
-            >
-              <Plus />
-            </button>
-
-            <button
-              className="btn btn-error"
-              disabled={count === 0}
-              onClick={() => setCount((prev) => parseInt(prev) - 1)}
-            >
-              <Minus className="stroke-white" />
-            </button>
+            {errors && errors.quantity && (
+              <p className="text-error">{errors.quantity.message}</p>
+            )}
           </div>
 
           <div className="card-actions justify-between items-center pt-2.5 border-t">
             <h2 className="text-xl font-semibold text-gray-700">$4.85 / KG</h2>
-            <button className="btn btn-primary">Buy Now</button>
+            <button
+              className="btn btn-primary"
+              onClick={handleSubmit(onSubmit)}
+            >
+              Buy Now
+            </button>
           </div>
         </div>
       </article>
