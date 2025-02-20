@@ -11,84 +11,50 @@ import profile from "../assets/profile.png";
 
 export default function Sidebar({ open, setOpen }) {
   const { pathname } = useLocation();
-  const uris = {
-    user: [
-      {
-        id: 1,
-        path: "/dashboard",
-        name: "Dashboard",
-        icon: dashboard,
-      },
-      {
-        id: 2,
-        path: "/dashboard/manage-products",
-        name: "Manage Products",
-        icon: products,
-      },
-      {
-        id: 3,
-        path: "/dashboard/create-product",
-        name: "Create Product",
-        icon: create,
-      },
-      {
-        id: 4,
-        path: "/dashboard/manage-orders",
-        name: "Manage Orders",
-        icon: orders,
-      },
-      {
-        id: 5,
-        path: "/dashboard/purchase-history",
-        name: "Purchase History",
-        icon: purchase,
-      },
-      {
-        id: 6,
-        path: "/dashboard/profile",
-        name: "Profile",
-        icon: profile,
-      },
-    ],
-    admin: [
-      {
-        id: 1,
-        path: "/dashboard",
-        name: "Dashboard",
-        icon: dashboard,
-      },
-      {
-        id: 2,
-        path: "/dashboard/admin-manage-products",
-        name: "Manage Products",
-        icon: products,
-      },
-      {
-        id: 3,
-        path: "/dashboard/admin-create-product",
-        name: "Create Product",
-        icon: create,
-      },
-      {
-        id: 4,
-        path: "/dashboard/admin-manage-orders",
-        name: "Manage Orders",
-        icon: orders,
-      },
-      {
-        id: 5,
-        path: "/dashboard/admin-manage-users",
-        name: "Manage Users",
-        icon: users,
-      },
-      {
-        id: 6,
-        path: "/dashboard/profile",
-        name: "Profile",
-        icon: profile,
-      },
-    ],
-  };
+  const uris = [
+    {
+      id: 1,
+      path: "/dashboard",
+      name: "Dashboard",
+      icon: dashboard,
+    },
+    {
+      id: 2,
+      path: "/dashboard/manage-products",
+      name: "Manage Products",
+      icon: products,
+    },
+    {
+      id: 3,
+      path: "/dashboard/create-product",
+      name: "Create Product",
+      icon: create,
+    },
+    {
+      id: 4,
+      path: "/dashboard/manage-orders",
+      name: "Manage Orders",
+      icon: orders,
+    },
+    {
+      id: 5,
+      path: "/dashboard/manage-users",
+      name: "Manage Users",
+      icon: users,
+    },
+    {
+      id: 6,
+      path: "/dashboard/purchase-history",
+      name: "Purchase History",
+      icon: purchase,
+    },
+    {
+      id: 7,
+      path: "/dashboard/profile",
+      name: "Profile",
+      icon: profile,
+    },
+  ];
 
   useEffect(() => {
     setOpen(false);
@@ -96,7 +62,7 @@ export default function Sidebar({ open, setOpen }) {
 
   return (
     <aside
-      className={`flex-shrink-0 lg:w-80 h-screen bg-gray-800 flex flex-col gap-5 fixed lg:static inset-0 ${
+      className={`flex-shrink-0 lg:w-80 h-screen bg-primary flex flex-col gap-5 fixed lg:static inset-0 ${
         open ? "translate-x-0" : "-translate-x-full"
       } lg:translate-x-0 px-3.5 py-5 z-[2000] transition-all duration-300`}
     >
@@ -113,13 +79,13 @@ export default function Sidebar({ open, setOpen }) {
       </div>
 
       <div className="flex flex-col gap-2.5">
-        {uris.user.map((uri) => (
+        {uris.map((uri) => (
           <Link
             key={uri.id}
             to={uri.path}
             className={`flex items-center gap-2.5 text-white ${
-              uri.path === pathname && "bg-gray-700"
-            } hover:bg-gray-700 px-3.5 py-2.5 rounded-md`}
+              uri.path === pathname && "bg-white/30"
+            } hover:bg-white/30 px-3.5 py-2.5 rounded-md`}
           >
             <img src={uri.icon} alt="Icon" className="size-5" /> {uri.name}
           </Link>

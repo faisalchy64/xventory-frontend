@@ -13,6 +13,7 @@ import ResetPassword from "./pages/ResetPassword";
 import Root from "./pages/Root";
 import ManageProducts from "./pages/ManageProducts";
 import ManageOrders from "./pages/ManageOrders";
+import ManageUsers from "./pages/ManageUsers";
 import PurchaseHistory from "./pages/PurchaseHistory";
 import CreateProduct from "./pages/CreateProduct";
 import Profile from "./pages/Profile";
@@ -42,6 +43,8 @@ export default function App() {
         />
         <Route path="/dashboard/create-product" element={<CreateProduct />} />
         <Route path="/dashboard/profile" element={<Profile />} />
+
+        <Route path="/dashboard/manage-users" element={<ManageUsers />} />
       </Route>
     </Routes>
   );
