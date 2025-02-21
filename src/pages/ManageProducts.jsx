@@ -1,4 +1,16 @@
+import { useState } from "react";
+import Modal from "../components/Modal";
+import ProductUpdateForm from "../components/ProductUpdateForm";
+import ProductTableItem from "../components/ProductTableItem";
+
 export default function ManageProducts() {
+  const [editShow, setEditShow] = useState(false);
+
+  const handleEdit = (data) => {
+    setEditShow(true);
+    console.log(data);
+  };
+
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">
       <h2 className="text-3xl font-bold text-gray-800">Manage Products</h2>
@@ -16,30 +28,18 @@ export default function ManageProducts() {
           </thead>
 
           <tbody>
-            <tr>
-              <td className="text-nowrap">12345</td>
-              <td className="text-nowrap">Apple</td>
-              <td className="text-nowrap">150 KG</td>
-              <td className="text-nowrap">$100</td>
-              <td className="flex items-center gap-2.5 text-nowrap">
-                <button className="btn btn-xs btn-primary">Edit</button>
-                <button className="btn btn-xs btn-error">Delete</button>
-              </td>
-            </tr>
-
-            <tr>
-              <td className="text-nowrap">12345</td>
-              <td className="text-nowrap">Orange</td>
-              <td className="text-nowrap">200 KG</td>
-              <td className="text-nowrap">$150</td>
-              <td className="flex items-center gap-2.5 text-nowrap">
-                <button className="btn btn-xs btn-primary">Edit</button>
-                <button className="btn btn-xs btn-error">Delete</button>
-              </td>
-            </tr>
+            <ProductTableItem handleEdit={handleEdit} />
+            <ProductTableItem handleEdit={handleEdit} />
+            <ProductTableItem handleEdit={handleEdit} />
           </tbody>
         </table>
       </div>
+
+      {editShow && (
+        <Modal>
+          <ProductUpdateForm setEditShow={setEditShow} />
+        </Modal>
+      )}
     </section>
   );
 }
