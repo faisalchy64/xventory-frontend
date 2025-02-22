@@ -1,6 +1,11 @@
+import { useState } from "react";
+import Modal from "../components/Modal";
+import ProfileUpdateForm from "../components/ProfileUpdateForm";
 import profile from "../assets/profile.png";
 
 export default function Profile() {
+  const [edit, setEdit] = useState({ isOpen: false, data: null });
+
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">
       <h2 className="text-3xl font-bold text-gray-800">Profile</h2>
@@ -23,7 +28,12 @@ export default function Profile() {
             </div>
           </div>
 
-          <button className="btn btn-sm btn-primary">Edit Profile</button>
+          <button
+            className="btn btn-sm btn-primary"
+            onClick={() => setEdit({ isOpen: true, data: { id: 12345 } })}
+          >
+            Edit Profile
+          </button>
         </div>
       </article>
 
@@ -54,11 +64,22 @@ export default function Profile() {
             </div>
 
             <div className="flex justify-end pt-2.5 md:pt-0">
-              <button className="btn btn-sm btn-primary">Edit Profile</button>
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => setEdit({ isOpen: true, data: { id: 12345 } })}
+              >
+                Edit Profile
+              </button>
             </div>
           </div>
         </div>
       </article>
+
+      {edit.isOpen && (
+        <Modal>
+          <ProfileUpdateForm edit={edit} setEdit={setEdit} />
+        </Modal>
+      )}
     </section>
   );
 }
