@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { X } from "lucide-react";
 
-export default function ProductUpdateForm({ setEditShow }) {
+export default function ProductUpdateForm({ setEdit }) {
   const {
     register,
     formState: { errors },
@@ -28,7 +28,7 @@ export default function ProductUpdateForm({ setEditShow }) {
             <h2 className="text-2xl font-bold text-gray-800">Update Product</h2>
             <button
               className="btn btn-ghost"
-              onClick={() => setEditShow(false)}
+              onClick={() => setEdit({ isOpen: false, data: null })}
             >
               <X className="stroke-gray-500" />
             </button>

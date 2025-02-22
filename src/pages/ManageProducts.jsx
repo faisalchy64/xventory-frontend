@@ -1,15 +1,12 @@
 import { useState } from "react";
+import ProductTableItem from "../components/ProductTableItem";
 import Modal from "../components/Modal";
 import ProductUpdateForm from "../components/ProductUpdateForm";
-import ProductTableItem from "../components/ProductTableItem";
+import ProductRemoveDialog from "../components/ProductRemoveDialog";
 
 export default function ManageProducts() {
-  const [editShow, setEditShow] = useState(false);
-
-  const handleEdit = (data) => {
-    setEditShow(true);
-    console.log(data);
-  };
+  const [edit, setEdit] = useState({ isOpen: false, data: null });
+  const [remove, setRemove] = useState({ isOpen: false, id: null });
 
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">
@@ -28,16 +25,20 @@ export default function ManageProducts() {
           </thead>
 
           <tbody>
-            <ProductTableItem handleEdit={handleEdit} />
-            <ProductTableItem handleEdit={handleEdit} />
-            <ProductTableItem handleEdit={handleEdit} />
+            <ProductTableItem setEdit={setEdit} setRemove={setRemove} />
           </tbody>
         </table>
       </div>
 
-      {editShow && (
+      {edit.isOpen && (
         <Modal>
-          <ProductUpdateForm setEditShow={setEditShow} />
+          <ProductUpdateForm edit={edit} setEdit={setEdit} />
+        </Modal>
+      )}
+
+      {remove.isOpen && (
+        <Modal>
+          <ProductRemoveDialog remove={remove} setRemove={setRemove} />
         </Modal>
       )}
     </section>
