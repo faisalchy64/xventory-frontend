@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Eye, EyeClosed } from "lucide-react";
 import WithGoogle from "../components/WithGoogle";
+import { signup } from "../apis/user";
 
 export default function Signup() {
   const [show, setShow] = useState(false);
@@ -12,11 +15,22 @@ export default function Signup() {
     handleSubmit,
     reset,
   } = useForm();
+  const { isPending, mutate, data, error } = useMutation({
+    mutationFn: signup,
+  });
+  const navigate = useNavigate();
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async (payload) => {
+    mutate(payload);
     reset();
   };
+
+  useEffect(() => {
+    if (data) {
+      toast.success(data.message);
+      navigate("/verify");
+    }
+  }, [data, navigate]);
 
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">
@@ -25,6 +39,14 @@ export default function Signup() {
           <h2 className="text-2xl font-semibold text-center text-gray-700">
             Create an account
           </h2>
+
+          {error && (
+            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
+              {error.status
+                ? error.response.data.message
+                : "There is a connection error."}
+            </p>
+          )}
 
           <form
             className="flex flex-col gap-2.5"
@@ -143,7 +165,9 @@ export default function Signup() {
               Already have an account
             </Link>
 
-            <button className="btn btn-primary text-base">Submit</button>
+            <button className="btn btn-primary text-base" disabled={isPending}>
+              Submit
+            </button>
           </form>
 
           <div className="divider">OR</div>
