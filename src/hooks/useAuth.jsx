@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
+import AuthContext from "../contexts/AuthContext";
 
 export default function useAuth() {
   const [loading, setLoading] = useState(true);
-  const [auth, setAuth] = useState(null);
+  const { auth, setAuth } = useContext(AuthContext);
 
   useEffect(() => {
     const auth = JSON.parse(localStorage.getItem("auth"));
@@ -16,7 +17,7 @@ export default function useAuth() {
     }, 500);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [setAuth]);
 
   return { loading, auth, setAuth };
 }

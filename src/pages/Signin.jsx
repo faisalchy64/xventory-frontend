@@ -15,12 +15,12 @@ export default function Signin() {
     handleSubmit,
     reset,
   } = useForm();
-  const { isPending, mutate, error } = useMutation({
+  const { isPending, mutate, data, error } = useMutation({
     mutationFn: signin,
   });
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { auth } = useAuth();
+  const { auth, setAuth } = useAuth();
   const from = (state && state.from.pathname) || "/";
 
   const onSubmit = async (payload) => {
@@ -32,7 +32,11 @@ export default function Signin() {
     if (auth) {
       navigate(from, { replace: true });
     }
-  }, [auth, from, navigate]);
+
+    if (data && data.status === 200) {
+      setAuth({ ...data.data });
+    }
+  }, [auth, from, data, setAuth, navigate]);
 
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">

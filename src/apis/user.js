@@ -29,3 +29,9 @@ export const verifyCode = async (payload) => {
 
   return data;
 };
+
+export const signout = async (payload) => {
+  const { data } = await api.patch("/signout", payload);
+
+  return data;
+};
