@@ -2,6 +2,11 @@ import api from "../api";
 
 export const signin = async (payload) => {
   const { data } = await api.post("/signin", payload);
+
+  if (data && data.status === 200) {
+    localStorage.setItem("auth", JSON.stringify(data.data));
+  }
+
   return data;
 };
 

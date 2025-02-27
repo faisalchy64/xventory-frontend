@@ -1,16 +1,19 @@
 import { Routes, Route } from "react-router";
 import Main from "./layouts/Main";
+import Auth from "./layouts/Auth";
 import Dashboard from "./layouts/Dashboard";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Product from "./pages/Product";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import WitoutAuthRoute from "./components/WithoutAuthRoute";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Verify from "./pages/Verify";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import AuthRoute from "./components/AuthRoute";
 import Root from "./pages/Root";
 import ManageProducts from "./pages/ManageProducts";
 import ManageOrders from "./pages/ManageOrders";
@@ -28,25 +31,35 @@ export default function App() {
         <Route path="/products/:id" element={<Product />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signin" element={<Signin />} />
-        <Route path="/verify" element={<Verify />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
 
-      <Route element={<Dashboard />}>
-        <Route path="/dashboard" element={<Root />} />
-        <Route path="/dashboard/manage-products" element={<ManageProducts />} />
-        <Route path="/dashboard/manage-orders" element={<ManageOrders />} />
-        <Route
-          path="/dashboard/purchase-history"
-          element={<PurchaseHistory />}
-        />
-        <Route path="/dashboard/create-product" element={<CreateProduct />} />
-        <Route path="/dashboard/profile" element={<Profile />} />
+      <Route element={<WitoutAuthRoute />}>
+        <Route element={<Auth />}>
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/signin" element={<Signin />} />
+          <Route path="/verify" element={<Verify />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+        </Route>
+      </Route>
 
-        <Route path="/dashboard/manage-users" element={<ManageUsers />} />
+      <Route element={<AuthRoute />}>
+        <Route element={<Dashboard />}>
+          <Route path="/dashboard" element={<Root />} />
+          <Route
+            path="/dashboard/manage-products"
+            element={<ManageProducts />}
+          />
+          <Route path="/dashboard/manage-orders" element={<ManageOrders />} />
+          <Route
+            path="/dashboard/purchase-history"
+            element={<PurchaseHistory />}
+          />
+          <Route path="/dashboard/create-product" element={<CreateProduct />} />
+          <Route path="/dashboard/profile" element={<Profile />} />
+
+          <Route path="/dashboard/manage-users" element={<ManageUsers />} />
+        </Route>
       </Route>
     </Routes>
   );
