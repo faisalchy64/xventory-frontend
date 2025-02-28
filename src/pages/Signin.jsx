@@ -20,7 +20,7 @@ export default function Signin() {
   });
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { auth, setAuth } = useAuth();
+  const { auth } = useAuth();
   const from = (state && state.from.pathname) || "/";
 
   const onSubmit = async (payload) => {
@@ -29,14 +29,10 @@ export default function Signin() {
   };
 
   useEffect(() => {
-    if (auth) {
+    if (auth || (data && data.status === 200)) {
       navigate(from, { replace: true });
     }
-
-    if (data && data.status === 200) {
-      setAuth({ ...data.data });
-    }
-  }, [auth, from, data, setAuth, navigate]);
+  }, [auth, from, data, navigate]);
 
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">

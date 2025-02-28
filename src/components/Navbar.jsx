@@ -1,11 +1,25 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router";
+import { useMutation } from "@tanstack/react-query";
 import { EllipsisVertical, Menu, X } from "lucide-react";
+import { signout } from "../apis/user";
+import useAuth from "../hooks/useAuth";
 
 export default function Navbar({ setOpen }) {
   const [show, setShow] = useState(false);
   const { pathname } = useLocation();
+  const { isPending, mutate } = useMutation({
+    mutationFn: signout,
+  });
+  const { auth, setAuth } = useAuth();
   const uris = ["products", "dashboard", "about", "contact"];
+
+  const handleSignout = () => {
+    const { email } = auth;
+    mutate({ email });
+    setAuth(null);
+    localStorage.removeItem("auth");
+  };
 
   useEffect(() => {
     setShow(false);
@@ -36,19 +50,35 @@ export default function Navbar({ setOpen }) {
             Home
           </Link>
 
-          {uris.map((uri) => (
-            <Link
-              key={uri}
-              to={uri}
-              className="text-sm font-semibold uppercase text-gray-600"
-            >
-              {uri}
-            </Link>
-          ))}
+          {uris.map((uri) => {
+            if (uri === "dashboard" && auth === null) {
+              return null;
+            }
 
-          <Link to="/signin">
-            <button className="btn btn-primary uppercase">Sign in</button>
-          </Link>
+            return (
+              <Link
+                key={uri}
+                to={uri}
+                className="text-sm font-semibold uppercase text-gray-600"
+              >
+                {uri}
+              </Link>
+            );
+          })}
+
+          {auth ? (
+            <button
+              className="btn btn-error uppercase text-base-200"
+              disabled={isPending}
+              onClick={handleSignout}
+            >
+              Signout
+            </button>
+          ) : (
+            <Link to="/signin" className="btn btn-primary uppercase">
+              Sign in
+            </Link>
+          )}
         </div>
 
         <div className="md:hidden relative">
@@ -65,19 +95,38 @@ export default function Navbar({ setOpen }) {
                 Home
               </Link>
 
-              {uris.map((uri) => (
-                <Link
-                  key={uri}
-                  to={uri}
-                  className="btn w-full uppercase text-gray-600 bg-base-200"
-                >
-                  {uri}
-                </Link>
-              ))}
+              {uris.map((uri) => {
+                if (uri === "dashboard" && auth === null) {
+                  return null;
+                }
 
-              <Link to="/signin" className="btn btn-primary w-full uppercase">
-                Sign in
-              </Link>
+                return (
+                  <Link
+                    key={uri}
+                    to={uri}
+                    className="btn w-full uppercase text-gray-600 bg-base-200"
+                  >
+                    {uri}
+                  </Link>
+                );
+              })}
+
+              {auth ? (
+                <button
+                  className="btn btn-block btn-error uppercase text-base-200"
+                  disabled={isPending}
+                  onClick={handleSignout}
+                >
+                  Signout
+                </button>
+              ) : (
+                <Link
+                  to="/signin"
+                  className="btn btn-block btn-primary uppercase"
+                >
+                  Sign in
+                </Link>
+              )}
             </div>
           )}
         </div>

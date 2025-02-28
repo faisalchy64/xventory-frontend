@@ -35,3 +35,23 @@ export const signout = async (payload) => {
 
   return data;
 };
+
+export const forgotPassword = async (payload) => {
+  const { data } = await api.patch("/forgot-password", payload);
+
+  if (data && data.status === 200) {
+    sessionStorage.setItem("temp", payload.email);
+  }
+
+  return data;
+};
+
+export const resetPassword = async (payload) => {
+  const { data } = await api.patch("/reset-password", payload);
+
+  if (data && data.status === 200) {
+    sessionStorage.removeItem("temp");
+  }
+
+  return data;
+};
