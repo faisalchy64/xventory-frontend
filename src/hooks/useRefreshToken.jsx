@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import api from "../api";
 import useAuth from "./useAuth";
 
@@ -6,12 +7,17 @@ export default function useRefreshToken() {
 
   const refresh = async () => {
     try {
-      const res = await api.get("/refresh-token");
-      setAuth({ ...res.data.data });
-      console.log(res);
+      const { data } = await api.get("/refresh-token");
+      setAuth({ ...data.data });
+      if (data && data.status === 200) {
+        localStorage.setItem("auth", JSON.stringify(data.data));
+      }
     } catch (error) {
-      // maybe clear the local storage and set setAuth to null
-      console.log(error);
+      if (error.response.data.status === 401) {
+        toast.error(error.response.data.message);
+        localStorage.removeItem("auth");
+        setAuth(null);
+      }
     }
   };
 

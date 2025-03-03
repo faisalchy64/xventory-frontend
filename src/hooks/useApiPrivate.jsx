@@ -10,8 +10,7 @@ export default function useApiPrivate() {
   useEffect(() => {
     const requestIntercept = apiPrivate.interceptors.request.use(
       (config) => {
-        console.log("12", config.headers["Authorization"]);
-        if (!config.headers["Authorization"]) {
+        if (config.headers["Authorization"] === undefined) {
           config.headers["Authorization"] = `Bearer ${
             auth && auth.accessToken
           }`;
@@ -25,12 +24,15 @@ export default function useApiPrivate() {
       (res) => res,
       async (err) => {
         const prevRequest = err && err.config;
-        console.log("15", prevRequest);
-        if (err && err.response.status === 401 && !prevRequest.sent) {
+        if (
+          err &&
+          err.response.status === 401 &&
+          prevRequest.sent === undefined
+        ) {
           prevRequest.sent = true;
           // new access token
-          const accessToken = await refresh();
-          prevRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+          const auth = await refresh();
+          prevRequest.headers["Authorization"] = `Bearer ${auth.accessToken}`;
           return apiPrivate(prevRequest);
         }
         return Promise.reject(err);

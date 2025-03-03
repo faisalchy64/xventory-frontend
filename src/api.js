@@ -7,7 +7,6 @@ const api = axios.create({
 
 export const apiPrivate = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_ORIGIN,
-  headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });
 

@@ -1,5 +1,10 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import useApiPrivate from "../hooks/useApiPrivate";
+import { createProduct } from "../apis/product";
+import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
 
 export default function CreateProduct() {
   const {
@@ -9,15 +14,37 @@ export default function CreateProduct() {
     setValue,
     reset,
   } = useForm();
+  const { isPending, mutate, data, error } = useMutation({
+    mutationFn: createProduct,
+  });
+  const { auth } = useAuth();
+  const apiPrivate = useApiPrivate();
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async (payload) => {
+    const form = new FormData();
+
+    for (const key in payload) {
+      if (key === "image") {
+        form.append(key, payload[key][0]);
+        continue;
+      }
+
+      form.append(key, payload[key]);
+    }
+
+    mutate({ apiPrivate, form });
     reset();
   };
 
   useEffect(() => {
-    setValue("seller", "abc");
-  }, [setValue]);
+    if (auth) {
+      setValue("seller", auth._id);
+    }
+
+    if (data && data.status === 201) {
+      toast.success(data.message);
+    }
+  }, [auth, data, setValue]);
 
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">
@@ -25,8 +52,17 @@ export default function CreateProduct() {
 
       <article className="card card-compact bg-base-100 w-full mx-auto shadow">
         <div className="card-body">
+          {error && (
+            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
+              {error.status
+                ? error.response.data.message
+                : "There is a connection error. Try again a few minutes after."}
+            </p>
+          )}
+
           <form
             className="flex flex-col gap-3.5"
+            encType="multipart/form-data"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="w-full flex flex-col gap-1">
@@ -210,7 +246,9 @@ export default function CreateProduct() {
               )}
             </div>
 
-            <button className="btn btn-primary text-base">Submit</button>
+            <button className="btn btn-primary text-base" disabled={isPending}>
+              Submit
+            </button>
           </form>
         </div>
       </article>

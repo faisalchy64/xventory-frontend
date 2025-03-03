@@ -32,7 +32,6 @@ export const verifyCode = async (payload) => {
 
 export const signout = async (payload) => {
   const { data } = await api.patch("/signout", payload);
-
   return data;
 };
 

@@ -16,7 +16,7 @@ createRoot(document.getElementById("root")).render(
         <AuthProvider>
           <App />
         </AuthProvider>
-        <Toaster position="top-right" />
+        <Toaster position="top-right" toastOptions={{ duration: 10000 }} />
       </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>
