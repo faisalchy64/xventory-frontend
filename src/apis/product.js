@@ -8,6 +8,13 @@ export const getProduct = async (apiPrivate, id) => {
   return data;
 };
 
+export const manageProduct = async (apiPrivate, seller, page) => {
+  const { data } = await apiPrivate.get(
+    `/manage-products/${seller}?page=${page}`
+  );
+  return data;
+};
+
 export const createProduct = async ({ apiPrivate, form }) => {
   const { data } = await apiPrivate.post("/products", form);
   return data;

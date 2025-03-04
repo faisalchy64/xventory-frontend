@@ -1,17 +1,19 @@
-export default function ProductTableItem({ setEdit, setRemove }) {
+export default function ProductTableItem({ product, setEdit, setRemove }) {
+  const { _id, name, quantity, price } = product;
+
   return (
     <tr>
-      <td className="text-nowrap">12345</td>
-      <td className="text-nowrap">Apple</td>
-      <td className="text-nowrap">150 KG</td>
-      <td className="text-nowrap">$100</td>
+      <td className="text-nowrap">{_id}</td>
+      <td className="capitalize text-nowrap">{name}</td>
+      <td className="text-nowrap">{quantity} KG</td>
+      <td className="text-nowrap">${price}</td>
       <td className="flex items-center gap-2.5 text-nowrap">
         <button
           className="btn btn-xs btn-primary"
           onClick={() =>
             setEdit({
               isOpen: true,
-              data: { id: 12345, name: "Apple", quantity: 150, price: 100 },
+              data: { ...product },
             })
           }
         >
