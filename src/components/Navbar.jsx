@@ -29,7 +29,7 @@ export default function Navbar({ setOpen }) {
     <nav className="bg-white py-5 border-b">
       <div className="w-4/5 flex justify-between items-center mx-auto">
         <div className="flex items-center gap-2.5">
-          {pathname.includes("/dashboard") && (
+          {auth && pathname.includes("/dashboard") && (
             <button
               className="btn btn-ghost lg:hidden"
               onClick={() => setOpen(true)}
@@ -42,10 +42,10 @@ export default function Navbar({ setOpen }) {
           </Link>
         </div>
 
-        <div className="hidden md:flex items-center gap-2.5">
+        <div className="hidden lg:flex items-center gap-2.5">
           <Link
             to="/"
-            className="text-sm font-semibold uppercase text-gray-600"
+            className="text-sm font-semibold uppercase text-gray-500"
           >
             Home
           </Link>
@@ -59,7 +59,7 @@ export default function Navbar({ setOpen }) {
               <Link
                 key={uri}
                 to={uri}
-                className="text-sm font-semibold uppercase text-gray-600"
+                className="text-sm font-semibold uppercase text-gray-500"
               >
                 {uri}
               </Link>
@@ -81,17 +81,18 @@ export default function Navbar({ setOpen }) {
           )}
         </div>
 
-        <div className="md:hidden relative">
-          <button className="btn md:hidden" onClick={() => setShow(!show)}>
-            {show ? <X /> : <Menu />}
+        <div className="lg:hidden relative">
+          <button className="btn lg:hidden" onClick={() => setShow(!show)}>
+            {show ? (
+              <X className="stroke-gray-500" />
+            ) : (
+              <Menu className="stroke-gray-500" />
+            )}
           </button>
 
           {show && (
-            <div className="w-60 flex md:hidden flex-col items-center gap-2.5 bg-base-100 absolute top-[120%] right-0 px-2.5 py-3.5 z-[1000] rounded-md shadow">
-              <Link
-                to="/"
-                className="btn w-full uppercase text-gray-600 bg-base-200"
-              >
+            <div className="w-40 flex lg:hidden flex-col items-center gap-2.5 bg-base-100 absolute top-[120%] right-0 px-2.5 py-3.5 z-[1000] rounded-2xl shadow">
+              <Link to="/" className="uppercase text-gray-500">
                 Home
               </Link>
 
@@ -101,11 +102,7 @@ export default function Navbar({ setOpen }) {
                 }
 
                 return (
-                  <Link
-                    key={uri}
-                    to={uri}
-                    className="btn w-full uppercase text-gray-600 bg-base-200"
-                  >
+                  <Link key={uri} to={uri} className="uppercase text-gray-500">
                     {uri}
                   </Link>
                 );

@@ -20,12 +20,12 @@ export const createProduct = async ({ apiPrivate, form }) => {
   return data;
 };
 
-export const updateProduct = async (apiPrivate, payload) => {
-  const { data } = await apiPrivate.patch("/products", payload);
+export const updateProduct = async ({ apiPrivate, _id, form }) => {
+  const { data } = await apiPrivate.patch(`/products/${_id}`, form);
   return data;
 };
 
-export const deleteProduct = async (apiPrivate, id) => {
-  const { data } = await apiPrivate.delete(`/products/${id}`);
+export const deleteProduct = async ({ apiPrivate, _id }) => {
+  const { data } = await apiPrivate.delete(`/products/${_id}`);
   return data;
 };

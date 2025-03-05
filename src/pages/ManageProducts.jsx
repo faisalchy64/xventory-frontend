@@ -11,7 +11,7 @@ import { manageProduct } from "../apis/product";
 
 export default function ManageProducts() {
   const [edit, setEdit] = useState({ isOpen: false, data: null });
-  const [remove, setRemove] = useState({ isOpen: false, id: null });
+  const [remove, setRemove] = useState({ isOpen: false, _id: null });
   const [page, setPage] = useState(1);
   const { auth } = useAuth();
   const apiPrivate = useApiPrivate();

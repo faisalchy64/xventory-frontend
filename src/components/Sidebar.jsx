@@ -62,19 +62,19 @@ export default function Sidebar({ open, setOpen }) {
 
   return (
     <aside
-      className={`flex-shrink-0 lg:w-80 h-screen bg-primary flex flex-col gap-5 fixed lg:static inset-0 ${
+      className={`flex-shrink-0 lg:w-80 h-screen bg-gray-50 flex flex-col gap-5 fixed lg:static inset-0 ${
         open ? "translate-x-0" : "-translate-x-full"
-      } lg:translate-x-0 px-3.5 py-5 z-[2000] transition-all duration-300`}
+      } lg:translate-x-0 px-3.5 py-5 z-[2000] transition-all duration-300 border-r`}
     >
       <div className="flex justify-between items-center">
-        <h3 className="btn btn-ghost text-2xl font-bold text-white">
+        <h3 className="btn btn-ghost text-2xl font-bold text-gray-800">
           Dashboard
         </h3>
         <button
           className="btn btn-ghost lg:hidden"
           onClick={() => setOpen(false)}
         >
-          <X className="stroke-white" />
+          <X className="stroke-gray-500" />
         </button>
       </div>
 
@@ -83,9 +83,9 @@ export default function Sidebar({ open, setOpen }) {
           <Link
             key={uri.id}
             to={uri.path}
-            className={`flex items-center gap-2.5 text-white ${
-              uri.path === pathname && "bg-white/30"
-            } hover:bg-white/30 px-3.5 py-2.5 rounded-md`}
+            className={`flex items-center gap-2.5 text-gray-500 ${
+              uri.path === pathname && "text-white bg-primary"
+            } hover:text-white hover:bg-primary px-3.5 py-2.5 rounded-md`}
           >
             <img src={uri.icon} alt="Icon" className="size-5" /> {uri.name}
           </Link>

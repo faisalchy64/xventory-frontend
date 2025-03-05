@@ -21,7 +21,7 @@ export default function ProductTableItem({ product, setEdit, setRemove }) {
         </button>
         <button
           className="btn btn-xs btn-error text-base-300"
-          onClick={() => setRemove({ isOpen: true, id: 12345 })}
+          onClick={() => setRemove({ isOpen: true, _id })}
         >
           Remove
         </button>

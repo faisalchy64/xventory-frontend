@@ -1,24 +1,74 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import { X } from "lucide-react";
+import useApiPrivate from "../hooks/useApiPrivate";
+import { updateProduct } from "../apis/product";
 
-export default function ProductUpdateForm({ setEdit }) {
+export default function ProductUpdateForm({ edit, setEdit }) {
   const {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
     reset,
   } = useForm();
+  const queryClient = useQueryClient();
+  const { isPending, mutate, data, error } = useMutation({
+    mutationFn: updateProduct,
+    onSettled: () =>
+      queryClient.invalidateQueries({ queryKey: ["manage-products"] }),
+  });
+  const apiPrivate = useApiPrivate();
 
-  const onSubmit = async (data) => {
-    console.log(data);
-    reset();
+  const isChanged = (payload) => {
+    const data = {};
+    const form = new FormData();
+
+    Object.keys(payload).map((key) => {
+      if (
+        payload[key] === edit.data[key] ||
+        (key === "image" && payload[key][0] === undefined)
+      ) {
+        return null;
+      }
+
+      if (key === "image") {
+        data[key] = payload[key][0];
+        return null;
+      }
+
+      if (key === "price" || key === "quantity") {
+        data[key] = Number(payload[key]);
+        return null;
+      }
+
+      data[key] = payload[key];
+    });
+
+    for (const key in data) {
+      form.append(key, data[key]);
+    }
+
+    return form;
+  };
+
+  const onSubmit = async (payload) => {
+    const { _id } = edit.data;
+    const form = isChanged(payload);
+
+    mutate({ apiPrivate, _id, form });
+
+    // reset();
   };
 
   useEffect(() => {
-    setValue("seller", "abc");
-  }, [setValue]);
+    if (data && data.status === 200) {
+      toast.success("Product updated successfully.");
+      setEdit({ isOpen: false, data: null });
+      reset();
+    }
+  }, [data, setEdit, reset]);
 
   return (
     <>
@@ -33,6 +83,15 @@ export default function ProductUpdateForm({ setEdit }) {
               <X className="stroke-gray-500" />
             </button>
           </div>
+
+          {error && (
+            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
+              {error.status
+                ? error.response.data.message
+                : "There is a connection error. Try again a few minutes after."}
+            </p>
+          )}
+
           <form
             className="h-[450px] flex flex-col gap-3.5 overflow-x-hidden overflow-y-auto"
             onSubmit={handleSubmit(onSubmit)}
@@ -59,6 +118,7 @@ export default function ProductUpdateForm({ setEdit }) {
                     value: /^[a-zA-Z\s]{3,}$/,
                     message: "Enter valid name.",
                   },
+                  value: edit.data.name,
                 })}
               />
 
@@ -79,16 +139,16 @@ export default function ProductUpdateForm({ setEdit }) {
                 id="image"
                 className="file-input file-input-bordered"
                 {...register("image", {
-                  required: {
-                    value: true,
-                    message: "Image is required.",
-                  },
+                  // required: {
+                  //   value: true,
+                  //   message: "Image is required.",
+                  // },
                 })}
               />
 
-              {errors && errors.image && (
+              {/* {errors && errors.image && (
                 <p className="text-error">{errors.image.message}</p>
-              )}
+              )} */}
             </div>
 
             <div className="w-full flex flex-col gap-1">
@@ -118,6 +178,7 @@ export default function ProductUpdateForm({ setEdit }) {
                     message: "Enter valid price.",
                   },
                   valueAsNumber: true,
+                  value: edit.data.price,
                 })}
               />
 
@@ -153,6 +214,7 @@ export default function ProductUpdateForm({ setEdit }) {
                     message: "Enter valid quantity.",
                   },
                   valueAsNumber: true,
+                  value: edit.data.quantity,
                 })}
               />
 
@@ -176,6 +238,7 @@ export default function ProductUpdateForm({ setEdit }) {
                     value: true,
                     message: "Unit is required.",
                   },
+                  value: edit.data.unit,
                 })}
               >
                 <option value="">Choose a unit</option>
@@ -210,6 +273,7 @@ export default function ProductUpdateForm({ setEdit }) {
                     value: /^[\w\d\s.,;:'"()!?&%@#\-\u00C0-\u024F]{5,500}$/u,
                     message: "Enter valid description.",
                   },
+                  value: edit.data.description,
                 })}
               />
 
@@ -218,7 +282,9 @@ export default function ProductUpdateForm({ setEdit }) {
               )}
             </div>
 
-            <button className="btn btn-primary text-base">Submit</button>
+            <button className="btn btn-primary text-base" disabled={isPending}>
+              Submit
+            </button>
           </form>
         </div>
       </article>
