@@ -1,10 +1,12 @@
-export const getProducts = async (apiPrivate) => {
-  const { data } = await apiPrivate.get("/products");
+import api from "../api";
+
+export const getProducts = async (search, page) => {
+  const { data } = await api.get(`/products?search=${search}&page=${page}`);
   return data;
 };
 
-export const getProduct = async (apiPrivate, id) => {
-  const { data } = await apiPrivate.get(`/products/${id}`);
+export const getProduct = async (id) => {
+  const { data } = await api.get(`/products/${id}`);
   return data;
 };
 
