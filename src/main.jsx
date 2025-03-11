@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "./components/AuthProvider.jsx";
 import App from "./App.jsx";
+import Scroll from "./components/Scroll.jsx";
 import "./index.css";
 
 const queryClient = new QueryClient();
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")).render(
           <App />
         </AuthProvider>
         <Toaster position="top-right" toastOptions={{ duration: 10000 }} />
+        <Scroll />
       </QueryClientProvider>
     </BrowserRouter>
   </StrictMode>
