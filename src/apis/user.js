@@ -20,6 +20,16 @@ export const signup = async (payload) => {
   return data;
 };
 
+export const withGoogle = async (payload) => {
+  const { data } = await api.post("/google", payload);
+
+  if (data && data.status === 200) {
+    localStorage.setItem("auth", JSON.stringify(data.data));
+  }
+
+  return data;
+};
+
 export const verifyCode = async (payload) => {
   const { data } = await api.post("/verify", payload);
 

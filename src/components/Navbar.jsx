@@ -4,6 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { EllipsisVertical, Menu, X } from "lucide-react";
 import { signout } from "../apis/user";
 import useAuth from "../hooks/useAuth";
+import firebaseAuth from "../firebase";
+import { signOut } from "firebase/auth";
 
 export default function Navbar({ setOpen }) {
   const [show, setShow] = useState(false);
@@ -14,11 +16,14 @@ export default function Navbar({ setOpen }) {
   const { auth, setAuth } = useAuth();
   const uris = ["products", "dashboard", "about", "contact"];
 
-  const handleSignout = () => {
+  const handleSignout = async () => {
     const { email } = auth;
     mutate({ email });
     setAuth(null);
-    localStorage.removeItem("auth");
+
+    if (firebaseAuth.currentUser) {
+      await signOut(firebaseAuth);
+    }
   };
 
   useEffect(() => {

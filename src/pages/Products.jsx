@@ -15,6 +15,7 @@ export default function Products() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
+      setPage(1);
       setSearch(bounce);
     }, 500);
 
