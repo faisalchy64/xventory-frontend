@@ -7,7 +7,7 @@ import CardItemSkeleton from "../ux/CardItemSkeleton";
 export default function ProductContainer() {
   const { isLoading, data, error } = useQuery({
     queryKey: ["products"],
-    queryFn: getProducts,
+    queryFn: () => getProducts("", 1),
   });
 
   return (

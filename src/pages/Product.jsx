@@ -3,21 +3,16 @@ import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getProduct } from "../apis/product";
 import ProductSkeleton from "../ux/ProductSkeleton";
-import toast from "react-hot-toast";
 
 export default function Product() {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(5);
   const { id } = useParams();
   const { isLoading, data, error } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
 
-  const handleOrder = async () => {
-    if (quantity <= 0 || quantity > data.data.quantity) {
-      return toast.error("Enter valid order quantity.");
-    }
-  };
+  const handleOrder = async () => {};
 
   return (
     <section className="w-4/5 flex flex-col items-center gap-10 py-10 mx-auto">
@@ -91,8 +86,23 @@ export default function Product() {
                 name="quantity"
                 placeholder="Enter order quantity"
                 className="input input-bordered w-full text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                value={quantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}
               />
+
+              {quantity < 5 && (
+                <p className="text-error">
+                  Quantity must be greater than or equal to 5{" "}
+                  {data.data.unit.toUpperCase()}.
+                </p>
+              )}
+
+              {quantity > data.data.quantity && (
+                <p className="text-error">
+                  Quantity must be less than or equal to {data.data.quantity}{" "}
+                  {data.data.unit.toUpperCase()}.
+                </p>
+              )}
             </div>
 
             <div className="card-actions justify-between items-center pt-2.5 border-t">
@@ -102,7 +112,11 @@ export default function Product() {
                   ? (quantity * data.data.price).toFixed(2)
                   : "0.00"}
               </h2>
-              <button className="btn btn-primary" onClick={handleOrder}>
+              <button
+                className="btn btn-primary"
+                disabled={quantity < 5 || quantity > data.data.quantity}
+                onClick={handleOrder}
+              >
                 Buy Now
               </button>
             </div>
