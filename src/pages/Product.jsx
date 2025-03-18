@@ -1,18 +1,39 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import { getProduct } from "../apis/product";
 import ProductSkeleton from "../ux/ProductSkeleton";
 
 export default function Product() {
-  const [quantity, setQuantity] = useState(5);
+  const [orderQty, setOrderQty] = useState(5);
   const { id } = useParams();
   const { isLoading, data, error } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
 
-  const handleOrder = async () => {};
+  const updateCart = async () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const { _id, name, image, price, quantity, unit, seller } = data.data;
+    const existingIndex = cart.findIndex((product) => product._id === _id);
+
+    existingIndex === -1
+      ? cart.push({
+          _id,
+          name,
+          price,
+          quantity,
+          orderQty,
+          unit,
+          image: image.optimize_url,
+          seller: seller._id,
+        })
+      : (cart[existingIndex].orderQty += orderQty);
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    toast.success("Product has been added to your cart.");
+  };
 
   return (
     <section className="w-4/5 flex flex-col items-center gap-10 py-10 mx-auto">
@@ -86,18 +107,18 @@ export default function Product() {
                 name="quantity"
                 placeholder="Enter order quantity"
                 className="input input-bordered w-full text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
+                value={orderQty}
+                onChange={(e) => setOrderQty(Number(e.target.value))}
               />
 
-              {quantity < 5 && (
+              {orderQty < 5 && (
                 <p className="text-error">
                   Quantity must be greater than or equal to 5{" "}
                   {data.data.unit.toUpperCase()}.
                 </p>
               )}
 
-              {quantity > data.data.quantity && (
+              {orderQty > data.data.quantity && (
                 <p className="text-error">
                   Quantity must be less than or equal to {data.data.quantity}{" "}
                   {data.data.unit.toUpperCase()}.
@@ -108,14 +129,14 @@ export default function Product() {
             <div className="card-actions justify-between items-center pt-2.5 border-t">
               <h2 className="text-xl font-semibold text-gray-700">
                 $
-                {quantity > 0 && quantity <= data.data.quantity
-                  ? (quantity * data.data.price).toFixed(2)
+                {orderQty > 0 && orderQty <= data.data.quantity
+                  ? (orderQty * data.data.price).toFixed(2)
                   : "0.00"}
               </h2>
               <button
                 className="btn btn-primary"
-                disabled={quantity < 5 || quantity > data.data.quantity}
-                onClick={handleOrder}
+                disabled={orderQty < 5 || orderQty > data.data.quantity}
+                onClick={updateCart}
               >
                 Buy Now
               </button>
