@@ -1,20 +1,30 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Plus, Minus } from "lucide-react";
 import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
-import { createOrder } from "../apis/order";
+import { createOrder, checkoutSession } from "../apis/order";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
   const [method, setMethod] = useState("card");
   const [info, setInfo] = useState({ phone_number: "", address: "" });
-  const { mutate, data, error } = useMutation({ mutationFn: createOrder });
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { auth } = useAuth();
   const apiPrivate = useApiPrivate();
+  const { mutate, error } = useMutation({
+    mutationFn: createOrder,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      if (data && data.status === 201 && method === "card") {
+        checkoutSession({ apiPrivate, payload: { cart, customer: auth._id } });
+        localStorage.removeItem("cart");
+      }
+    },
+  });
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const handleCheckout = () => {
     if (auth === null) {
@@ -76,12 +86,7 @@ export default function Cart() {
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
-
-    if (data) {
-      setInfo({ phone_number: "", address: "" });
-      localStorage.removeItem("cart");
-    }
-  }, [data]);
+  }, []);
 
   return (
     <section className="w-4/5 flex flex-col items-center gap-10 py-10 mx-auto">
