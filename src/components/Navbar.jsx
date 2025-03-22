@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { EllipsisVertical, Menu, X } from "lucide-react";
+import { EllipsisVertical, ShoppingBag, Menu, X } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { signout } from "../apis/user";
 import useAuth from "../hooks/useAuth";
@@ -73,6 +73,10 @@ export default function Navbar({ setOpen }) {
             );
           })}
 
+          <Link to="/cart" className="btn">
+            <ShoppingBag className="stroke-gray-500" />
+          </Link>
+
           {auth ? (
             <button
               className="btn btn-error uppercase text-base-200"
@@ -88,7 +92,11 @@ export default function Navbar({ setOpen }) {
           )}
         </div>
 
-        <div className="lg:hidden relative">
+        <div className="lg:hidden flex items-center gap-2.5 relative">
+          <Link to="/cart" className="btn">
+            <ShoppingBag className="stroke-gray-500" />
+          </Link>
+
           <button className="btn lg:hidden" onClick={() => setShow(!show)}>
             {show ? (
               <X className="stroke-gray-500" />

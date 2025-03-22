@@ -1,19 +1,26 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { getProduct } from "../apis/product";
 import ProductSkeleton from "../ux/ProductSkeleton";
 
 export default function Product() {
-  const [orderQty, setOrderQty] = useState(5);
+  const [orderQty, setOrderQty] = useState(0);
   const { id } = useParams();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
   const { isLoading, data, error } = useQuery({
     queryKey: ["product", id],
     queryFn: () => getProduct(id),
   });
 
-  const updateCart = async () => {
+  const onSubmit = async (payload) => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const { _id, name, image, price, quantity, unit, seller } = data.data;
     const existingIndex = cart.findIndex((product) => product._id === _id);
@@ -24,15 +31,16 @@ export default function Product() {
           name,
           price,
           quantity,
-          orderQty,
           unit,
+          orderQty: payload.orderQty,
           image: image.optimize_url,
           seller: seller._id,
         })
-      : (cart[existingIndex].orderQty += orderQty);
+      : (cart[existingIndex].orderQty += payload.orderQty);
 
     localStorage.setItem("cart", JSON.stringify(cart));
     toast.success("Product has been added to your cart.");
+    reset();
   };
 
   return (
@@ -101,46 +109,51 @@ export default function Product() {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2.5 py-2.5">
-              <input
-                type="number"
-                name="quantity"
-                placeholder="Enter order quantity"
-                className="input input-bordered w-full text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                value={orderQty}
-                onChange={(e) => setOrderQty(Number(e.target.value))}
-              />
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="flex flex-col gap-2.5 py-2.5">
+                <input
+                  type="number"
+                  name="quantity"
+                  placeholder="Enter order quantity"
+                  className="input input-bordered w-full text-gray-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  {...register("orderQty", {
+                    required: {
+                      value: true,
+                      message: "Quantity is required.",
+                    },
+                    min: {
+                      value: 5,
+                      message: `Quantity must be greater than or equal to 5 ${data.data.unit.toUpperCase()}.`,
+                    },
+                    max: {
+                      value: data.data.quantity,
+                      message: `Quantity must be less than or equal to ${
+                        data.data.quantity
+                      } ${data.data.unit.toUpperCase()}.`,
+                    },
+                    onChange: (e) => setOrderQty(e.target.value),
+                    valueAsNumber: true,
+                  })}
+                />
 
-              {orderQty < 5 && (
-                <p className="text-error">
-                  Quantity must be greater than or equal to 5{" "}
-                  {data.data.unit.toUpperCase()}.
-                </p>
-              )}
+                {errors && errors.orderQty && (
+                  <p className="text-error">{errors.orderQty.message}</p>
+                )}
+              </div>
 
-              {orderQty > data.data.quantity && (
-                <p className="text-error">
-                  Quantity must be less than or equal to {data.data.quantity}{" "}
-                  {data.data.unit.toUpperCase()}.
-                </p>
-              )}
-            </div>
-
-            <div className="card-actions justify-between items-center pt-2.5 border-t">
-              <h2 className="text-xl font-semibold text-gray-700">
-                $
-                {orderQty > 0 && orderQty <= data.data.quantity
-                  ? (orderQty * data.data.price).toFixed(2)
-                  : "0.00"}
-              </h2>
-              <button
-                className="btn btn-primary"
-                disabled={orderQty < 5 || orderQty > data.data.quantity}
-                onClick={updateCart}
-              >
-                Buy Now
-              </button>
-            </div>
+              <div className="card-actions justify-between items-center pt-2.5 border-t">
+                <h2 className="text-xl font-semibold text-gray-700">
+                  ${(orderQty * data.data.price).toFixed(2)}
+                </h2>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={data.data.quantity === 0}
+                >
+                  Buy Now
+                </button>
+              </div>
+            </form>
           </div>
         </article>
       )}

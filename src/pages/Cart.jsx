@@ -1,32 +1,29 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
 import { Plus, Minus } from "lucide-react";
 import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
-import { createOrder, checkoutSession } from "../apis/order";
+import { createOrder, createCheckoutSession } from "../apis/order";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
-  const [method, setMethod] = useState("card");
-  const [info, setInfo] = useState({ phone_number: "", address: "" });
-  const queryClient = useQueryClient();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+  } = useForm();
   const { auth } = useAuth();
   const apiPrivate = useApiPrivate();
-  const { mutate, error } = useMutation({
+  const { isPending, mutateAsync, error } = useMutation({
     mutationFn: createOrder,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
-      if (data && data.status === 201 && method === "card") {
-        checkoutSession({ apiPrivate, payload: { cart, customer: auth._id } });
-        localStorage.removeItem("cart");
-      }
-    },
   });
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const handleCheckout = () => {
+  const onSubmit = async (info) => {
     if (auth === null) {
       return navigate("/signin", { state: { from: { pathname } } });
     }
@@ -44,13 +41,24 @@ export default function Cart() {
           .reduce((acc, product) => acc + product.price * product.orderQty, 0)
           .toFixed(2)
       ),
-      payment_method: method,
+      payment_method: info.method,
       customer: auth._id,
       phone_number: info.phone_number,
       address: info.address,
     };
+    const data = await mutateAsync({ apiPrivate, payload });
 
-    mutate({ apiPrivate, payload });
+    if (data.status === 201) {
+      localStorage.removeItem("cart");
+
+      info.method === "card" &&
+        (await createCheckoutSession({
+          apiPrivate,
+          payload: { cart, orderId: data.data._id },
+        }));
+    }
+
+    reset();
   };
 
   const increment = (id) => {
@@ -144,9 +152,9 @@ export default function Cart() {
                     <Plus size={16} />
                   </button>
 
-                  <button className="btn btn-sm text-base uppercase text-gray-500">
+                  <p className="max-w-fit text-base font-semibold uppercase text-gray-500">
                     {product.orderQty} {product.unit}
-                  </button>
+                  </p>
 
                   <button
                     className="btn btn-sm btn-error text-base-200"
@@ -197,83 +205,107 @@ export default function Cart() {
               </p>
             </div>
 
-            <div className="flex items-center gap-2.5 py-2.5">
-              <div className="flex items-center gap-1.5">
-                <input
-                  type="radio"
-                  id="card"
-                  className="radio radio-sm radio-primary"
-                  checked={method === "card"}
-                  onChange={() => setMethod("card")}
-                />
-                <label htmlFor="card" className="font-semibold text-gray-500">
-                  CARD
-                </label>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <input
-                  type="radio"
-                  id="cod"
-                  className="radio radio-sm radio-primary"
-                  checked={method === "cod"}
-                  onChange={() => setMethod("cod")}
-                />
-                <label htmlFor="cod" className="font-semibold text-gray-500">
-                  COD
-                </label>
-              </div>
-            </div>
-
-            <div className="w-full flex flex-col gap-1">
-              <label
-                htmlFor="number"
-                className="text-base font-semibold text-gray-500"
-              >
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                id="number"
-                placeholder="Enter your phone number"
-                autoComplete="off"
-                className="input input-bordered text-gray-500"
-                value={info.phone_number}
-                onChange={(e) =>
-                  setInfo({ ...info, phone_number: e.target.value })
-                }
-              />
-            </div>
-
-            <div className="w-full flex flex-col gap-1">
-              <label
-                htmlFor="address"
-                className="text-base font-semibold text-gray-500"
-              >
-                Address
-              </label>
-              <textarea
-                id="address"
-                rows="3"
-                placeholder="Enter your address"
-                autoComplete="off"
-                className="textarea textarea-bordered text-gray-500 resize-none"
-                value={info.address}
-                onChange={(e) => setInfo({ ...info, address: e.target.value })}
-              />
-            </div>
-
-            <button
-              className="btn btn-block btn-primary text-base"
-              disabled={
-                info.phone_number === "" ||
-                info.address === "" ||
-                cart.length === 0
-              }
-              onClick={handleCheckout}
+            <form
+              className="flex flex-col gap-2.5"
+              onSubmit={handleSubmit(onSubmit)}
             >
-              Checkout
-            </button>
+              <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="radio"
+                    id="card"
+                    value="card"
+                    defaultChecked
+                    className="radio radio-sm radio-primary"
+                    {...register("method")}
+                  />
+                  <label htmlFor="card" className="font-semibold text-gray-500">
+                    CARD
+                  </label>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="radio"
+                    id="cod"
+                    value="cod"
+                    className="radio radio-sm radio-primary"
+                    {...register("method")}
+                  />
+                  <label htmlFor="cod" className="font-semibold text-gray-500">
+                    COD
+                  </label>
+                </div>
+              </div>
+
+              <div className="w-full flex flex-col gap-1">
+                <label
+                  htmlFor="phone_number"
+                  className="text-base font-semibold text-gray-500"
+                >
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  id="phone_number"
+                  placeholder="Enter your phone number"
+                  autoComplete="off"
+                  className="input input-bordered text-gray-500"
+                  {...register("phone_number", {
+                    required: {
+                      value: true,
+                      message: "Number is required.",
+                    },
+                    pattern: {
+                      value: /^(?:\+?\d{1,3}[-\s]?)?(?:\d[-\s]?){9,10}\d$/,
+                      message: "Enter valid number.",
+                    },
+                  })}
+                />
+
+                {errors && errors.phone_number && (
+                  <p className="text-error">{errors.phone_number.message}</p>
+                )}
+              </div>
+
+              <div className="w-full flex flex-col gap-1">
+                <label
+                  htmlFor="address"
+                  className="text-base font-semibold text-gray-500"
+                >
+                  Address
+                </label>
+                <textarea
+                  id="address"
+                  rows="3"
+                  placeholder="Enter your address"
+                  autoComplete="off"
+                  className="textarea textarea-bordered text-gray-500 resize-none"
+                  {...register("address", {
+                    required: {
+                      value: true,
+                      message: "Address is required.",
+                    },
+                    pattern: {
+                      value: /^(?!\s)([a-zA-Z0-9.,'"\-:;()&%$#!? ]{10,500})$/,
+                      message: "Enter valid address.",
+                    },
+                  })}
+                />
+
+                {errors && errors.address && (
+                  <p className="text-error">{errors.address.message}</p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="btn btn-block btn-primary text-base"
+                disabled={isPending}
+              >
+                Checkout
+              </button>
+            </form>
           </div>
         </article>
       </div>

@@ -14,7 +14,7 @@ export default function CreateProduct() {
     setValue,
     reset,
   } = useForm();
-  const { isPending, mutate, data, error } = useMutation({
+  const { isPending, mutateAsync, error } = useMutation({
     mutationFn: createProduct,
   });
   const { auth } = useAuth();
@@ -32,19 +32,20 @@ export default function CreateProduct() {
       form.append(key, payload[key]);
     }
 
-    mutate({ apiPrivate, form });
-    reset();
+    const data = await mutateAsync({ apiPrivate, form });
+
+    if (data && data.status === 201) {
+      toast.success(data.message);
+      reset();
+      setValue("seller", auth._id);
+    }
   };
 
   useEffect(() => {
     if (auth) {
       setValue("seller", auth._id);
     }
-
-    if (data && data.status === 201) {
-      toast.success(data.message);
-    }
-  }, [auth, data, setValue]);
+  }, [auth, setValue]);
 
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">

@@ -7,7 +7,14 @@ export const createOrder = async ({ apiPrivate, payload }) => {
   return data;
 };
 
-export const checkoutSession = async ({ apiPrivate, payload }) => {
+export const getCheckoutSession = async (apiPrivate, session_id) => {
+  const { data } = await apiPrivate.get(
+    `/checkout-session?session_id=${session_id}`
+  );
+  return data;
+};
+
+export const createCheckoutSession = async ({ apiPrivate, payload }) => {
   try {
     const { data } = await apiPrivate.post("/create-checkout-session", payload);
     const { sessionId } = data.data;

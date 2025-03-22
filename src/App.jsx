@@ -22,6 +22,8 @@ import ManageUsers from "./pages/ManageUsers";
 import PurchaseHistory from "./pages/PurchaseHistory";
 import CreateProduct from "./pages/CreateProduct";
 import Profile from "./pages/Profile";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentFailed from "./pages/PaymentFailed";
 
 export default function App() {
   return (
@@ -62,6 +64,9 @@ export default function App() {
 
           <Route path="/dashboard/manage-users" element={<ManageUsers />} />
         </Route>
+
+        <Route path="/success" element={<PaymentSuccess />} />
+        <Route path="/cancel" element={<PaymentFailed />} />
       </Route>
     </Routes>
   );
