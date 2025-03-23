@@ -7,7 +7,7 @@ import Modal from "../components/Modal";
 import ProductUpdateForm from "../components/ProductUpdateForm";
 import ProductRemoveDialog from "../components/ProductRemoveDialog";
 import TableItemSkeleton from "../ux/TableItemSkeleton";
-import { manageProduct } from "../apis/product";
+import { manageProducts } from "../apis/product";
 
 export default function ManageProducts() {
   const [edit, setEdit] = useState({ isOpen: false, data: null });
@@ -17,7 +17,7 @@ export default function ManageProducts() {
   const apiPrivate = useApiPrivate();
   const { isLoading, data, error } = useQuery({
     queryKey: ["manage-products", auth._id, page],
-    queryFn: () => manageProduct(apiPrivate, auth._id, page),
+    queryFn: () => manageProducts(apiPrivate, auth._id, page),
   });
 
   return (
@@ -43,7 +43,7 @@ export default function ManageProducts() {
 
         {data && data.data.products.length > 0 && (
           <table className="table">
-            <thead>
+            <thead className="text-sm uppercase text-gray-700">
               <tr>
                 <th>Product Id</th>
                 <th>Product</th>
@@ -53,7 +53,7 @@ export default function ManageProducts() {
               </tr>
             </thead>
 
-            <tbody>
+            <tbody className="font-semibold text-gray-500">
               {data &&
                 data.data.products.map((product) => (
                   <ProductTableItem

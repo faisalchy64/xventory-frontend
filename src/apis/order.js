@@ -2,6 +2,13 @@ import { loadStripe } from "@stripe/stripe-js";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
+export const manageOrders = async (apiPrivate, seller, page) => {
+  const { data } = await apiPrivate.get(
+    `/orders?seller=${seller}&page=${page}`
+  );
+  return data;
+};
+
 export const createOrder = async ({ apiPrivate, payload }) => {
   const { data } = await apiPrivate.post("/orders", payload);
   return data;

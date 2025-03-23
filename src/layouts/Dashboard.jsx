@@ -9,7 +9,7 @@ export default function Dashboard() {
   return (
     <div className="flex">
       <Sidebar open={open} setOpen={setOpen} />
-      <main className="w-full md:h-screen overflow-y-scroll">
+      <main className="w-full md:h-screen overflow-y-auto">
         <Navbar setOpen={setOpen} />
         <Outlet />
       </main>

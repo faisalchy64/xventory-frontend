@@ -9,7 +9,7 @@ export default function ProductTableItem({ product, setEdit, setRemove }) {
       <td className="text-nowrap">${price}</td>
       <td className="flex items-center gap-2.5 text-nowrap">
         <button
-          className="btn btn-xs btn-primary"
+          className="btn btn-sm btn-primary"
           onClick={() =>
             setEdit({
               isOpen: true,
@@ -20,7 +20,7 @@ export default function ProductTableItem({ product, setEdit, setRemove }) {
           Edit
         </button>
         <button
-          className="btn btn-xs btn-error text-base-300"
+          className="btn btn-sm btn-error text-base-300"
           onClick={() => setRemove({ isOpen: true, _id })}
         >
           Remove

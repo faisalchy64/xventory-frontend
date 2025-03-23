@@ -10,7 +10,7 @@ export const getProduct = async (id) => {
   return data;
 };
 
-export const manageProduct = async (apiPrivate, seller, page) => {
+export const manageProducts = async (apiPrivate, seller, page) => {
   const { data } = await apiPrivate.get(
     `/manage-products/${seller}?page=${page}`
   );
