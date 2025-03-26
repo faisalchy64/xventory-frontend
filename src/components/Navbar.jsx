@@ -89,8 +89,8 @@ export default function Navbar({ setOpen }) {
           )}
 
           {authMenu && auth && (
-            <div className="hidden lg:flex flex-col items-center gap-2.5 bg-base-100 absolute top-[120%] right-0 px-2.5 py-3.5 z-[1000] rounded-2xl shadow">
-              <p className="text-gray-500 border-b">{auth.email}</p>
+            <div className="min-w-40 hidden lg:flex flex-col items-center gap-2.5 bg-base-100 absolute top-[120%] right-0 px-2.5 py-3.5 z-[1000] rounded-2xl shadow">
+              <p className="font-semibold text-gray-500">{auth.email}</p>
 
               <Link to="/dashboard" className="uppercase text-gray-500">
                 Dashboard
@@ -120,28 +120,20 @@ export default function Navbar({ setOpen }) {
           </button>
 
           {show && (
-            <div
-              className={`${
-                auth ? "w-fit" : "w-40"
-              } flex lg:hidden flex-col items-center gap-2.5 bg-base-100 absolute top-[120%] right-0 px-2.5 py-3.5 z-[1000] rounded-2xl shadow`}
-            >
-              {auth && <p className="text-gray-500 border-b">{auth.email}</p>}
+            <div className="min-w-40 flex lg:hidden flex-col items-center gap-2.5 bg-base-100 absolute top-[120%] right-0 px-2.5 py-3.5 z-[1000] rounded-2xl shadow">
+              {auth && (
+                <p className="font-semibold text-gray-500">{auth.email}</p>
+              )}
 
               <Link to="/" className="uppercase text-gray-500">
                 Home
               </Link>
 
-              {uris.map((uri) => {
-                if (uri === "dashboard" && auth === null) {
-                  return null;
-                }
-
-                return (
-                  <Link key={uri} to={uri} className="uppercase text-gray-500">
-                    {uri}
-                  </Link>
-                );
-              })}
+              {uris.map((uri) => (
+                <Link key={uri} to={uri} className="uppercase text-gray-500">
+                  {uri}
+                </Link>
+              ))}
 
               {auth ? (
                 <>

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
@@ -7,30 +6,30 @@ import { deleteProduct } from "../apis/product";
 
 export default function ProductRemoveDialog({ remove, setRemove }) {
   const queryClient = useQueryClient();
-  const { isPending, mutate, data, error } = useMutation({
+  const { isPending, mutateAsync, error } = useMutation({
     mutationFn: deleteProduct,
-    onSettled: () =>
+    onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["manage-products"] }),
   });
   const apiPrivate = useApiPrivate();
 
-  const onRemove = () => {
+  const onRemove = async () => {
     const { _id } = remove;
-    mutate({ apiPrivate, _id });
-  };
+    const data = await mutateAsync({ apiPrivate, _id });
 
-  useEffect(() => {
     if (data && data.status === 200) {
       toast.success("Product removed successfully.");
       setRemove({ isOpen: false, _id: null });
     }
-  }, [data, setRemove]);
+  };
 
   return (
     <article className="card card-compact bg-base-100 w-4/5 md:w-1/2 shadow">
       <div className="card-body">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-800">Remove Product</h2>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Remove your product
+          </h2>
           <button
             className="btn btn-ghost"
             onClick={() => setRemove({ isOpen: false, _id: null })}
@@ -43,7 +42,7 @@ export default function ProductRemoveDialog({ remove, setRemove }) {
           <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
             {error.status
               ? error.response.data.message
-              : "There is a connection error. Try again a few minutes after."}
+              : "There is a connection error."}
           </p>
         )}
 

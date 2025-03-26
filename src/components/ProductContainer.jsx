@@ -22,7 +22,7 @@ export default function ProductContainer() {
         <p className="w-fit text-red-500 bg-red-50 px-2.5 py-1.5 mx-auto rounded-md">
           {error.status
             ? error.response.data.message
-            : "There is a connection error. Try again a few minutes after."}
+            : "There is a connection error."}
         </p>
       )}
 

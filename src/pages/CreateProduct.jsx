@@ -1,17 +1,15 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
 import { createProduct } from "../apis/product";
-import useAuth from "../hooks/useAuth";
-import toast from "react-hot-toast";
 
 export default function CreateProduct() {
   const {
     register,
     formState: { errors },
     handleSubmit,
-    setValue,
     reset,
   } = useForm();
   const { isPending, mutateAsync, error } = useMutation({
@@ -32,20 +30,15 @@ export default function CreateProduct() {
       form.append(key, payload[key]);
     }
 
+    form.append("seller", auth._id);
+
     const data = await mutateAsync({ apiPrivate, form });
 
     if (data && data.status === 201) {
       toast.success(data.message);
       reset();
-      setValue("seller", auth._id);
     }
   };
-
-  useEffect(() => {
-    if (auth) {
-      setValue("seller", auth._id);
-    }
-  }, [auth, setValue]);
 
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">
@@ -57,7 +50,7 @@ export default function CreateProduct() {
             <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
               {error.status
                 ? error.response.data.message
-                : "There is a connection error. Try again a few minutes after."}
+                : "There is a connection error."}
             </p>
           )}
 

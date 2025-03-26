@@ -8,7 +8,7 @@ export default function ProductCard({ product }) {
       <figure className="h-60">
         <img
           src={image.optimize_url}
-          alt="Product Image"
+          alt={name}
           loading="lazy"
           className="size-full object-cover"
         />

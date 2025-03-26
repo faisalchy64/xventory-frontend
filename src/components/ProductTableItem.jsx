@@ -3,11 +3,11 @@ export default function ProductTableItem({ product, setEdit, setRemove }) {
 
   return (
     <tr>
-      <td className="text-nowrap">{_id}</td>
+      <td>{_id}</td>
       <td className="capitalize text-nowrap">{name}</td>
-      <td className="text-nowrap">{quantity} KG</td>
-      <td className="text-nowrap">${price}</td>
-      <td className="flex items-center gap-2.5 text-nowrap">
+      <td>{quantity} KG</td>
+      <td>${price}</td>
+      <td className="flex items-center gap-2.5">
         <button
           className="btn btn-sm btn-primary"
           onClick={() =>
@@ -17,7 +17,7 @@ export default function ProductTableItem({ product, setEdit, setRemove }) {
             })
           }
         >
-          Edit
+          Update
         </button>
         <button
           className="btn btn-sm btn-error text-base-300"
