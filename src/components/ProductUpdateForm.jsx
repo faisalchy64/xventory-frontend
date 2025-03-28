@@ -15,7 +15,7 @@ export default function ProductUpdateForm({ edit, setEdit }) {
   const queryClient = useQueryClient();
   const { isPending, mutateAsync, error } = useMutation({
     mutationFn: updateProduct,
-    onSettled: () =>
+    onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["manage-products"] }),
   });
   const apiPrivate = useApiPrivate();

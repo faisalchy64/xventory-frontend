@@ -14,6 +14,11 @@ export const createOrder = async ({ apiPrivate, payload }) => {
   return data;
 };
 
+export const updateOrder = async ({ apiPrivate, _id, payload }) => {
+  const { data } = await apiPrivate.patch(`/orders/${_id}`, payload);
+  return data;
+};
+
 export const getCheckoutSession = async (apiPrivate, session_id) => {
   const { data } = await apiPrivate.get(
     `/checkout-session?session_id=${session_id}`

@@ -5,9 +5,12 @@ import useApiPrivate from "../hooks/useApiPrivate";
 import { manageOrders } from "../apis/order";
 import OrderTableItem from "../components/OrderTableItem";
 import TableItemSkeleton from "../ux/TableItemSkeleton";
+import Modal from "../components/Modal";
+import SellerOrderDialog from "../components/SellerOrderDialog";
 
 export default function ManageOrders() {
   const [page, setPage] = useState(1);
+  const [view, setView] = useState({ isOpen: false, data: null });
   const { auth } = useAuth();
   const apiPrivate = useApiPrivate();
   const { isLoading, data, error } = useQuery({
@@ -52,7 +55,11 @@ export default function ManageOrders() {
             <tbody className="font-semibold text-gray-500">
               {data &&
                 data.data.orders.map((order) => (
-                  <OrderTableItem key={order._id} order={order} />
+                  <OrderTableItem
+                    key={order._id}
+                    order={order}
+                    setView={setView}
+                  />
                 ))}
             </tbody>
           </table>
@@ -81,6 +88,12 @@ export default function ManageOrders() {
             Next
           </button>
         </div>
+      )}
+
+      {view.isOpen && (
+        <Modal>
+          <SellerOrderDialog view={view} setView={setView} />
+        </Modal>
       )}
     </section>
   );
