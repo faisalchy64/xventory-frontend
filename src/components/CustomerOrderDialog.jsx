@@ -1,36 +1,13 @@
 import { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
-import { updateOrder } from "../apis/order";
-import useApiPrivate from "../hooks/useApiPrivate";
-import toast from "react-hot-toast";
 
-export default function SellerOrderDialog({ view, setView }) {
+export default function CustomerOrderDialog({ view, setView }) {
   const [active, setActive] = useState("Order");
-  const queryClient = useQueryClient();
-  const { isPending, mutateAsync, error } = useMutation({
-    mutationFn: updateOrder,
-    onSuccess: () =>
-      queryClient.invalidateQueries({
-        queryKey: ["manage-orders"],
-      }),
-  });
-  const apiPrivate = useApiPrivate();
   const text_colors = {
     pending: "text-amber-500",
     paid: "text-green-500",
     delivered: "text-green-500",
     cancelled: "text-red-500",
-  };
-
-  const onAction = async (payload) => {
-    const { _id } = view.data;
-    const data = await mutateAsync({ apiPrivate, _id, payload });
-
-    if (data && data.status === 200) {
-      toast.success("Order updated successfully.");
-      setView({ ...view, data: { ...data.data } });
-    }
   };
 
   return (
@@ -68,21 +45,13 @@ export default function SellerOrderDialog({ view, setView }) {
 
             <button
               className={`flex-grow font-semibold text-gray-700 ${
-                active === "Customer" && "bg-base-300"
+                active === "Personal" && "bg-base-300"
               } px-2.5 py-1.5 rounded-md`}
-              onClick={() => setActive("Customer")}
+              onClick={() => setActive("Personal")}
             >
-              Customer
+              Personal
             </button>
           </div>
-
-          {error && (
-            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-              {error.status
-                ? error.response.data.message
-                : "There is a connection error."}
-            </p>
-          )}
 
           {active === "Order" && (
             <div className="grid md:grid-cols-3 gap-2.5 py-5">
@@ -185,55 +154,13 @@ export default function SellerOrderDialog({ view, setView }) {
                   {new Date(view.data.updatedAt).toLocaleString()}
                 </p>
               </div>
-
-              <div className="flex flex-col gap-1">
-                <h3 className="font-semibold uppercase text-gray-700">
-                  Order Action
-                </h3>
-
-                <select
-                  id="order_action"
-                  className="select select-sm select-bordered text-gray-500"
-                  disabled={
-                    view.data.order_status === "delivered" ||
-                    view.data.order_status === "cancelled" ||
-                    isPending
-                  }
-                  onChange={(e) => onAction({ order_status: e.target.value })}
-                >
-                  <option value="">Choose an action</option>
-                  <option value="delivered">DELIVERED</option>
-                  <option value="cancelled">CANCELLED</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <h3 className="font-semibold uppercase text-gray-700">
-                  Payment Action
-                </h3>
-
-                <select
-                  id="payment_action"
-                  className="select select-sm select-bordered text-gray-500"
-                  disabled={
-                    view.data.payment_status === "paid" ||
-                    view.data.payment_status === "failed" ||
-                    isPending
-                  }
-                  onChange={(e) => onAction({ payment_status: e.target.value })}
-                >
-                  <option value="">Choose an action</option>
-                  <option value="paid">PAID</option>
-                  <option value="failed">FAILED</option>
-                </select>
-              </div>
             </div>
           )}
 
           {active === "Product" && (
             <div className="flex flex-col gap-2.5 py-5">
               {view.data.products.map(
-                ({ _id, price, orderQty, unit, product }) => (
+                ({ _id, price, orderQty, unit, product, seller }) => (
                   <article
                     className="card card-compact bg-base-100 shadow"
                     key={_id}
@@ -256,6 +183,10 @@ export default function SellerOrderDialog({ view, setView }) {
                           <p className="font-semibold uppercase text-gray-500">
                             {orderQty} {unit} * ${price}
                           </p>
+
+                          <p className="font-semibold capitalize text-gray-500">
+                            {seller.name}
+                          </p>
                         </div>
                       </div>
 
@@ -269,7 +200,7 @@ export default function SellerOrderDialog({ view, setView }) {
             </div>
           )}
 
-          {active === "Customer" && (
+          {active === "Personal" && (
             <div className="grid md:grid-cols-3 gap-2.5 py-5">
               <div className="flex flex-col gap-1">
                 <h3 className="font-semibold uppercase text-gray-700">Name</h3>
@@ -298,7 +229,7 @@ export default function SellerOrderDialog({ view, setView }) {
                   Address
                 </h3>
 
-                <p className="uppercase text-gray-500">{view.data.address}</p>
+                <p className="capitalize text-gray-500">{view.data.address}</p>
               </div>
             </div>
           )}

@@ -9,6 +9,13 @@ export const manageOrders = async (apiPrivate, seller, page) => {
   return data;
 };
 
+export const purchaseHistory = async (apiPrivate, customer, page) => {
+  const { data } = await apiPrivate.get(
+    `/purchase-history?customer=${customer}&page=${page}`
+  );
+  return data;
+};
+
 export const createOrder = async ({ apiPrivate, payload }) => {
   const { data } = await apiPrivate.post("/orders", payload);
   return data;
