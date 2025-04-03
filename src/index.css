@@ -23,7 +23,7 @@ body {
 
 .hero {
   height: calc(100dvh - 88.8px);
-  background: url("https://images.pexels.com/photos/1300975/pexels-photo-1300975.jpeg");
+  background: url("./assets/hero.webp");
   background-size: cover;
   background-position: center;
 }
@@ -36,7 +36,7 @@ body {
 }
 
 .cta {
-  background: url("https://images.pexels.com/photos/952485/pexels-photo-952485.jpeg");
+  background: url("./assets/cta.webp");
   background-size: cover;
   background-position: center;
 }

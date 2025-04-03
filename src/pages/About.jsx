@@ -1,12 +1,10 @@
+import about from "../assets/about.webp";
+
 export default function About() {
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">
       <div className="h-80 rounded-3xl overflow-hidden">
-        <img
-          src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg"
-          alt="Team Image"
-          className="size-full object-cover"
-        />
+        <img src={about} alt="Team Image" className="size-full object-cover" />
       </div>
 
       <h2 className="text-3xl font-bold text-gray-800 text-center">
