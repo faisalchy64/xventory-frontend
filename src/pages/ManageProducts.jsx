@@ -5,14 +5,14 @@ import useApiPrivate from "../hooks/useApiPrivate";
 import ProductTableItem from "../components/ProductTableItem";
 import Modal from "../components/Modal";
 import ProductUpdateForm from "../components/ProductUpdateForm";
-import ProductRemoveDialog from "../components/ProductRemoveDialog";
+import RemoveDialog from "../components/RemoveDialog";
 import TableItemSkeleton from "../ux/TableItemSkeleton";
-import { manageProducts } from "../apis/product";
+import { manageProducts, deleteProduct } from "../apis/product";
 
 export default function ManageProducts() {
+  const [page, setPage] = useState(1);
   const [edit, setEdit] = useState({ isOpen: false, data: null });
   const [remove, setRemove] = useState({ isOpen: false, _id: null });
-  const [page, setPage] = useState(1);
   const { auth } = useAuth();
   const apiPrivate = useApiPrivate();
   const { isLoading, data, error } = useQuery({
@@ -35,17 +35,18 @@ export default function ManageProducts() {
           </p>
         )}
 
-        {data && data.data.products.length === 0 && (
+        {data?.data?.products?.length === 0 && (
           <p className="w-fit text-gray-500 bg-gray-50 px-2.5 py-1.5 mx-auto rounded-md">
             No products found.
           </p>
         )}
 
-        {data && data.data.products.length > 0 && (
+        {data?.data?.products?.length > 0 && (
           <table className="table">
             <thead className="text-sm uppercase text-gray-700">
               <tr>
                 <th>Product Id</th>
+                <th>Seller Id</th>
                 <th>Product</th>
                 <th>Quantity</th>
                 <th>Price</th>
@@ -54,21 +55,20 @@ export default function ManageProducts() {
             </thead>
 
             <tbody className="font-semibold text-gray-500">
-              {data &&
-                data.data.products.map((product) => (
-                  <ProductTableItem
-                    key={product._id}
-                    product={product}
-                    setEdit={setEdit}
-                    setRemove={setRemove}
-                  />
-                ))}
+              {data?.data?.products?.map((product) => (
+                <ProductTableItem
+                  key={product._id}
+                  product={product}
+                  setEdit={setEdit}
+                  setRemove={setRemove}
+                />
+              ))}
             </tbody>
           </table>
         )}
       </div>
 
-      {data && data.data.products.length > 0 && (
+      {data?.data?.products?.length > 0 && (
         <div className="flex items-center gap-2.5">
           <button
             className="btn btn-sm btn-primary"
@@ -80,10 +80,10 @@ export default function ManageProducts() {
           <button className="btn btn-sm text-gray-500">{page}</button>
           <button
             className="btn btn-sm btn-primary"
-            disabled={Math.ceil(data.data.total / 6) === page}
+            disabled={Math.ceil(data?.data?.total / 6) === page}
             onClick={() =>
               setPage(
-                (prev) => Math.ceil(data.data.total / 6) > prev && prev + 1
+                (prev) => Math.ceil(data?.data?.total / 6) > prev && prev + 1
               )
             }
           >
@@ -100,7 +100,14 @@ export default function ManageProducts() {
 
       {remove.isOpen && (
         <Modal>
-          <ProductRemoveDialog remove={remove} setRemove={setRemove} />
+          <RemoveDialog
+            title="Remove your product"
+            mutationFn={deleteProduct}
+            queryKey="manage-products"
+            message="Product removed successfully."
+            remove={remove}
+            setRemove={setRemove}
+          />
         </Modal>
       )}
     </section>

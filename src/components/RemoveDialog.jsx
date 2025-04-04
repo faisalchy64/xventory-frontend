@@ -2,14 +2,19 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
 import useApiPrivate from "../hooks/useApiPrivate";
-import { deleteProduct } from "../apis/product";
 
-export default function ProductRemoveDialog({ remove, setRemove }) {
+export default function RemoveDialog({
+  title,
+  mutationFn,
+  queryKey,
+  message,
+  remove,
+  setRemove,
+}) {
   const queryClient = useQueryClient();
   const { isPending, mutateAsync, error } = useMutation({
-    mutationFn: deleteProduct,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: ["manage-products"] }),
+    mutationFn,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: [queryKey] }),
   });
   const apiPrivate = useApiPrivate();
 
@@ -17,8 +22,8 @@ export default function ProductRemoveDialog({ remove, setRemove }) {
     const { _id } = remove;
     const data = await mutateAsync({ apiPrivate, _id });
 
-    if (data && data.status === 200) {
-      toast.success("Product removed successfully.");
+    if (data?.status === 200) {
+      toast.success(message);
       setRemove({ isOpen: false, _id: null });
     }
   };
@@ -27,9 +32,7 @@ export default function ProductRemoveDialog({ remove, setRemove }) {
     <article className="card card-compact bg-base-100 w-4/5 md:w-1/2 shadow">
       <div className="card-body">
         <div className="flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Remove your product
-          </h2>
+          <h2 className="text-2xl font-bold text-gray-800">{title}</h2>
           <button
             className="btn btn-ghost"
             onClick={() => setRemove({ isOpen: false, _id: null })}
@@ -47,7 +50,7 @@ export default function ProductRemoveDialog({ remove, setRemove }) {
         )}
 
         <h3 className="text-base font-semibold text-center text-gray-700">
-          Are you sure you want to remove this product?
+          Are you sure you want to perform this action?
         </h3>
 
         <p className="text-sm text-center text-gray-500">

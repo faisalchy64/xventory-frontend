@@ -1,9 +1,10 @@
 export default function ProductTableItem({ product, setEdit, setRemove }) {
-  const { _id, name, quantity, price } = product;
+  const { _id, name, quantity, price, seller } = product;
 
   return (
     <tr>
       <td>{_id}</td>
+      <td>{seller}</td>
       <td className="capitalize text-nowrap">{name}</td>
       <td>{quantity} KG</td>
       <td>${price}</td>

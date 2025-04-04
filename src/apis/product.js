@@ -12,7 +12,7 @@ export const getProduct = async (id) => {
 
 export const manageProducts = async (apiPrivate, seller, page) => {
   const { data } = await apiPrivate.get(
-    `/manage-products/${seller}?page=${page}`
+    `/manage-products?seller=${seller}&page=${page}`
   );
   return data;
 };
