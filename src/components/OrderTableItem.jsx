@@ -1,16 +1,16 @@
 export default function OrderTableItem({ order, setView }) {
-  const { _id, customer, products, payment_status, order_status } = order;
+  const { _id, products, payment_status, order_status } = order;
   const text_colors = {
     pending: "text-amber-500",
     paid: "text-green-500",
     delivered: "text-green-500",
     cancelled: "text-red-500",
+    failed: "text-red-500",
   };
 
   return (
     <tr>
       <td>{_id}</td>
-      <td className="uppercase">{customer.name}</td>
       <td>
         $
         {products

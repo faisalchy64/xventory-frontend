@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
-import { manageOrders } from "../apis/order";
 import OrderTableItem from "../components/OrderTableItem";
 import TableItemSkeleton from "../ux/TableItemSkeleton";
 import Modal from "../components/Modal";
-import SellerOrderDialog from "../components/SellerOrderDialog";
+import OrderDialog from "../components/OrderDialog";
+import { manageOrders } from "../apis/order";
 
 export default function ManageOrders() {
   const [page, setPage] = useState(1);
@@ -33,18 +33,17 @@ export default function ManageOrders() {
           </p>
         )}
 
-        {data && data.data.orders.length === 0 && (
+        {data?.data?.orders?.length === 0 && (
           <p className="w-fit text-gray-500 bg-gray-50 px-2.5 py-1.5 mx-auto rounded-md">
             No orders found.
           </p>
         )}
 
-        {data && data.data.orders.length > 0 && (
+        {data?.data?.orders?.length > 0 && (
           <table className="table">
             <thead className="text-sm uppercase text-gray-700">
               <tr>
                 <th>Order ID</th>
-                <th>Customer</th>
                 <th>Amount</th>
                 <th>Payment</th>
                 <th>Status</th>
@@ -53,20 +52,19 @@ export default function ManageOrders() {
             </thead>
 
             <tbody className="font-semibold text-gray-500">
-              {data &&
-                data.data.orders.map((order) => (
-                  <OrderTableItem
-                    key={order._id}
-                    order={order}
-                    setView={setView}
-                  />
-                ))}
+              {data?.data?.orders?.map((order) => (
+                <OrderTableItem
+                  key={order._id}
+                  order={order}
+                  setView={setView}
+                />
+              ))}
             </tbody>
           </table>
         )}
       </div>
 
-      {data && data.data.orders.length > 0 && (
+      {data?.data?.orders?.length > 0 && (
         <div className="flex items-center gap-2.5">
           <button
             className="btn btn-sm btn-primary"
@@ -78,10 +76,10 @@ export default function ManageOrders() {
           <button className="btn btn-sm text-gray-500">{page}</button>
           <button
             className="btn btn-sm btn-primary"
-            disabled={Math.ceil(data.data.total / 6) === page}
+            disabled={Math.ceil(data?.data?.total / 6) === page}
             onClick={() =>
               setPage(
-                (prev) => Math.ceil(data.data.total / 6) > prev && prev + 1
+                (prev) => Math.ceil(data?.data?.total / 6) > prev && prev + 1
               )
             }
           >
@@ -92,7 +90,7 @@ export default function ManageOrders() {
 
       {view.isOpen && (
         <Modal>
-          <SellerOrderDialog view={view} setView={setView} />
+          <OrderDialog view={view} setView={setView} />
         </Modal>
       )}
     </section>

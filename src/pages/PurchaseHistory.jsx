@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
-import { purchaseHistory } from "../apis/order";
 import TableItemSkeleton from "../ux/TableItemSkeleton";
-import PurchaseTableItem from "../components/PurchaseTableItem";
+import OrderTableItem from "../components/OrderTableItem";
 import Modal from "../components/Modal";
-import CustomerOrderDialog from "../components/CustomerOrderDialog";
+import OrderDialog from "../components/OrderDialog";
+import { purchaseHistory } from "../apis/order";
 
 export default function PurchaseHistory() {
   const [page, setPage] = useState(1);
@@ -33,13 +33,13 @@ export default function PurchaseHistory() {
           </p>
         )}
 
-        {data && data.data.orders.length === 0 && (
+        {data?.data?.orders?.length === 0 && (
           <p className="w-fit text-gray-500 bg-gray-50 px-2.5 py-1.5 mx-auto rounded-md">
             No purchase history found.
           </p>
         )}
 
-        {data && data.data.orders.length > 0 && (
+        {data?.data?.orders?.length > 0 && (
           <table className="table">
             <thead className="text-sm uppercase text-gray-700">
               <tr>
@@ -52,20 +52,19 @@ export default function PurchaseHistory() {
             </thead>
 
             <tbody className="font-semibold text-gray-500">
-              {data &&
-                data.data.orders.map((order) => (
-                  <PurchaseTableItem
-                    key={order._id}
-                    order={order}
-                    setView={setView}
-                  />
-                ))}
+              {data?.data?.orders?.map((order) => (
+                <OrderTableItem
+                  key={order._id}
+                  order={order}
+                  setView={setView}
+                />
+              ))}
             </tbody>
           </table>
         )}
       </div>
 
-      {data && data.data.orders.length > 0 && (
+      {data?.data?.orders?.length > 0 && (
         <div className="flex items-center gap-2.5">
           <button
             className="btn btn-sm btn-primary"
@@ -77,10 +76,10 @@ export default function PurchaseHistory() {
           <button className="btn btn-sm text-gray-500">{page}</button>
           <button
             className="btn btn-sm btn-primary"
-            disabled={Math.ceil(data.data.total / 6) === page}
+            disabled={Math.ceil(data?.data?.total / 6) === page}
             onClick={() =>
               setPage(
-                (prev) => Math.ceil(data.data.total / 6) > prev && prev + 1
+                (prev) => Math.ceil(data?.data?.total / 6) > prev && prev + 1
               )
             }
           >
@@ -91,7 +90,7 @@ export default function PurchaseHistory() {
 
       {view.isOpen && (
         <Modal>
-          <CustomerOrderDialog view={view} setView={setView} />
+          <OrderDialog view={view} setView={setView} />
         </Modal>
       )}
     </section>

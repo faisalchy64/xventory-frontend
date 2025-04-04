@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
-import { updateOrder } from "../apis/order";
-import useApiPrivate from "../hooks/useApiPrivate";
 import toast from "react-hot-toast";
+import useAuth from "../hooks/useAuth";
+import useApiPrivate from "../hooks/useApiPrivate";
+import { updateOrder } from "../apis/order";
 
-export default function SellerOrderDialog({ view, setView }) {
+export default function OrderDialog({ view, setView }) {
   const [active, setActive] = useState("Order");
   const queryClient = useQueryClient();
   const { isPending, mutateAsync, error } = useMutation({
@@ -15,12 +16,14 @@ export default function SellerOrderDialog({ view, setView }) {
         queryKey: ["manage-orders"],
       }),
   });
+  const { auth } = useAuth();
   const apiPrivate = useApiPrivate();
   const text_colors = {
     pending: "text-amber-500",
     paid: "text-green-500",
     delivered: "text-green-500",
     cancelled: "text-red-500",
+    failed: "text-red-500",
   };
 
   const onAction = async (payload) => {
@@ -94,25 +97,29 @@ export default function SellerOrderDialog({ view, setView }) {
                 <p className="break-all text-gray-500">{view.data._id}</p>
               </div>
 
-              <div className="flex flex-col gap-1">
-                <h3 className="font-semibold uppercase text-gray-700">
-                  Payment Id
-                </h3>
+              {view.data.payment_id && (
+                <div className="flex flex-col gap-1">
+                  <h3 className="font-semibold uppercase text-gray-700">
+                    Payment Id
+                  </h3>
 
-                <p className="break-all text-gray-500">
-                  {view.data.payment_id}
-                </p>
-              </div>
+                  <p className="break-all text-gray-500">
+                    {view.data.payment_id}
+                  </p>
+                </div>
+              )}
 
-              <div className="flex flex-col gap-1">
-                <h3 className="font-semibold uppercase text-gray-700">
-                  Payment Intent
-                </h3>
+              {view.data.payment_intent && (
+                <div className="flex flex-col gap-1">
+                  <h3 className="font-semibold uppercase text-gray-700">
+                    Payment Intent
+                  </h3>
 
-                <p className="break-all text-gray-500">
-                  {view.data.payment_intent}
-                </p>
-              </div>
+                  <p className="break-all text-gray-500">
+                    {view.data.payment_intent}
+                  </p>
+                </div>
+              )}
 
               <div className="flex flex-col gap-1">
                 <h3 className="font-semibold uppercase text-gray-700">
@@ -186,54 +193,60 @@ export default function SellerOrderDialog({ view, setView }) {
                 </p>
               </div>
 
-              <div className="flex flex-col gap-1">
-                <h3 className="font-semibold uppercase text-gray-700">
-                  Order Action
-                </h3>
+              {view.data.customer._id === auth._id ? null : (
+                <div className="flex flex-col gap-1">
+                  <h3 className="font-semibold uppercase text-gray-700">
+                    Order Action
+                  </h3>
 
-                <select
-                  id="order_action"
-                  className="select select-sm select-bordered text-gray-500"
-                  disabled={
-                    view.data.order_status === "delivered" ||
-                    view.data.order_status === "cancelled" ||
-                    isPending
-                  }
-                  onChange={(e) => onAction({ order_status: e.target.value })}
-                >
-                  <option value="">Choose an action</option>
-                  <option value="delivered">DELIVERED</option>
-                  <option value="cancelled">CANCELLED</option>
-                </select>
-              </div>
+                  <select
+                    id="order_action"
+                    className="select select-sm select-bordered text-gray-500"
+                    disabled={
+                      view.data.order_status === "delivered" ||
+                      view.data.order_status === "cancelled" ||
+                      isPending
+                    }
+                    onChange={(e) => onAction({ order_status: e.target.value })}
+                  >
+                    <option value="">Choose an action</option>
+                    <option value="delivered">DELIVERED</option>
+                    <option value="cancelled">CANCELLED</option>
+                  </select>
+                </div>
+              )}
 
-              <div className="flex flex-col gap-1">
-                <h3 className="font-semibold uppercase text-gray-700">
-                  Payment Action
-                </h3>
+              {view.data.customer._id === auth._id ? null : (
+                <div className="flex flex-col gap-1">
+                  <h3 className="font-semibold uppercase text-gray-700">
+                    Payment Action
+                  </h3>
 
-                <select
-                  id="payment_action"
-                  className="select select-sm select-bordered text-gray-500"
-                  disabled={
-                    view.data.payment_status === "paid" ||
-                    view.data.payment_status === "failed" ||
-                    isPending
-                  }
-                  onChange={(e) => onAction({ payment_status: e.target.value })}
-                >
-                  <option value="">Choose an action</option>
-                  <option value="paid">PAID</option>
-                  <option value="failed">FAILED</option>
-                </select>
-              </div>
+                  <select
+                    id="payment_action"
+                    className="select select-sm select-bordered text-gray-500"
+                    disabled={
+                      view.data.payment_status === "paid" ||
+                      view.data.payment_status === "failed" ||
+                      isPending
+                    }
+                    onChange={(e) =>
+                      onAction({ payment_status: e.target.value })
+                    }
+                  >
+                    <option value="">Choose an action</option>
+                    <option value="paid">PAID</option>
+                    <option value="failed">FAILED</option>
+                  </select>
+                </div>
+              )}
             </div>
           )}
 
           {active === "Product" && (
             <div className="flex flex-col gap-2.5 py-5">
               {view.data.products.map(
-                ({ _id, price, orderQty, unit, product }) => (
+                ({ _id, price, orderQty, unit, product, seller }) => (
                   <article
                     className="card card-compact bg-base-100 shadow"
                     key={_id}
@@ -242,19 +255,23 @@ export default function SellerOrderDialog({ view, setView }) {
                       <div className="flex items-center gap-2.5">
                         <figure className="size-12 flex-shrink-0 bg-gray-300 rounded-md">
                           <img
-                            src={product && product.image.optimize_url}
-                            alt={product && product.name}
+                            src={product?.image?.optimize_url}
+                            alt={product?.name}
                             className="size-full object-cover"
                           />
                         </figure>
 
                         <div className="flex flex-col">
                           <p className="font-semibold capitalize text-gray-500">
-                            {product && product.name}
+                            {product?.name}
                           </p>
 
                           <p className="font-semibold uppercase text-gray-500">
                             {orderQty} {unit} * ${price}
+                          </p>
+
+                          <p className="font-semibold capitalize text-gray-500">
+                            {seller?.name}
                           </p>
                         </div>
                       </div>
@@ -271,6 +288,16 @@ export default function SellerOrderDialog({ view, setView }) {
 
           {active === "Customer" && (
             <div className="grid md:grid-cols-3 gap-2.5 py-5">
+              <div className="flex flex-col gap-1">
+                <h3 className="font-semibold uppercase text-gray-700">
+                  Customer Id
+                </h3>
+
+                <p className="break-all text-gray-500">
+                  {view.data.customer._id}
+                </p>
+              </div>
+
               <div className="flex flex-col gap-1">
                 <h3 className="font-semibold uppercase text-gray-700">Name</h3>
 
