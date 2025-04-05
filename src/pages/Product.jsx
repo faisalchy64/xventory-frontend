@@ -51,7 +51,7 @@ export default function Product() {
         <p className="w-fit text-red-500 bg-red-50 px-2.5 py-1.5 mx-auto rounded-md">
           {error.status
             ? error.response.data.message
-            : "There is a connection error. Try again a few minutes after."}
+            : "There is a connection error."}
         </p>
       )}
 
@@ -103,7 +103,7 @@ export default function Product() {
                 <h2 className="text-base font-semibold text-gray-600">
                   Seller
                 </h2>
-                <p className="uppercase text-gray-500">
+                <p className="capitalize text-gray-500">
                   {data.data.seller.name}
                 </p>
               </div>

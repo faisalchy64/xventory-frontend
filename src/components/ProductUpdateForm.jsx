@@ -58,7 +58,7 @@ export default function ProductUpdateForm({ edit, setEdit }) {
 
     const data = await mutateAsync({ apiPrivate, _id, form });
 
-    if (data && data.status === 200) {
+    if (data?.status === 200) {
       toast.success("Product updated successfully.");
       setEdit({ isOpen: false, data: null });
       reset();
@@ -134,17 +134,8 @@ export default function ProductUpdateForm({ edit, setEdit }) {
               type="file"
               id="image"
               className="file-input file-input-bordered"
-              {...register("image", {
-                // required: {
-                //   value: true,
-                //   message: "Image is required.",
-                // },
-              })}
+              {...register("image")}
             />
-
-            {/* {errors && errors.image && (
-                <p className="text-error">{errors.image.message}</p>
-              )} */}
           </div>
 
           <div className="w-full flex flex-col gap-1">

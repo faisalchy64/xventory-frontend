@@ -4,29 +4,23 @@ export default function TableItemSkeleton() {
       <thead>
         <tr>
           <th>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </th>
+
           <th>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </th>
+
           <th>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </th>
+
           <th>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </th>
+
           <th>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </th>
         </tr>
       </thead>
@@ -34,197 +28,155 @@ export default function TableItemSkeleton() {
       <tbody>
         <tr>
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
         </tr>
 
         <tr>
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
         </tr>
 
         <tr>
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
         </tr>
 
         <tr>
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
         </tr>
 
         <tr>
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
         </tr>
 
         <tr>
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
         </tr>
 
         <tr>
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
+
           <td>
-            <span className="block text-transparent bg-gray-200 animate-pulse rounded-md">
-              abc
-            </span>
+            <span className="h-5 block bg-gray-200 animate-pulse rounded-md" />
           </td>
         </tr>
       </tbody>

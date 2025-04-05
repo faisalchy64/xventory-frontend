@@ -64,3 +64,13 @@ export const resetPassword = async (payload) => {
 
   return data;
 };
+
+export const manageUsers = async (apiPrivate, page) => {
+  const { data } = await apiPrivate.get(`/manage-users?page=${page}`);
+  return data;
+};
+
+export const deleteUser = async ({ apiPrivate, _id }) => {
+  const { data } = await apiPrivate.delete(`/manage-users/${_id}`);
+  return data;
+};

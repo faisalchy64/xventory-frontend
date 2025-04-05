@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router";
 import { X } from "lucide-react";
+import useAuth from "../hooks/useAuth";
 import dashboard from "../assets/dashboard.png";
 import products from "../assets/products.png";
 import create from "../assets/create.png";
@@ -11,6 +12,7 @@ import profile from "../assets/profile.png";
 
 export default function Sidebar({ open, setOpen }) {
   const { pathname } = useLocation();
+  const { auth } = useAuth();
   const uris = [
     {
       id: 1,
@@ -38,21 +40,9 @@ export default function Sidebar({ open, setOpen }) {
     },
     {
       id: 5,
-      path: "/dashboard/manage-users",
-      name: "Manage Users",
-      icon: users,
-    },
-    {
-      id: 6,
       path: "/dashboard/purchase-history",
       name: "Purchase History",
       icon: purchase,
-    },
-    {
-      id: 7,
-      path: "/dashboard/profile",
-      name: "Profile",
-      icon: profile,
     },
   ];
 
@@ -90,6 +80,26 @@ export default function Sidebar({ open, setOpen }) {
             <img src={uri.icon} alt="Icon" className="size-5" /> {uri.name}
           </Link>
         ))}
+
+        {auth.isAdmin && (
+          <Link
+            to="/dashboard/manage-users"
+            className={`flex items-center gap-2.5 text-gray-500 ${
+              pathname === "/dashboard/manage-users" && "text-white bg-primary"
+            } hover:text-white hover:bg-primary px-3.5 py-2.5 rounded-md`}
+          >
+            <img src={users} alt="Icon" className="size-5" /> Manage Users
+          </Link>
+        )}
+
+        <Link
+          to="/dashboard/profile"
+          className={`flex items-center gap-2.5 text-gray-500 ${
+            pathname === "/dashboard/profile" && "text-white bg-primary"
+          } hover:text-white hover:bg-primary px-3.5 py-2.5 rounded-md`}
+        >
+          <img src={profile} alt="Icon" className="size-5" /> Profile
+        </Link>
       </div>
     </aside>
   );

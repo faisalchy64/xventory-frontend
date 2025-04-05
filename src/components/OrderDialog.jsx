@@ -325,7 +325,7 @@ export default function OrderDialog({ view, setView }) {
                   Address
                 </h3>
 
-                <p className="uppercase text-gray-500">{view.data.address}</p>
+                <p className="capitalize text-gray-500">{view.data.address}</p>
               </div>
             </div>
           )}

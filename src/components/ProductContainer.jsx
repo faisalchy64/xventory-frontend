@@ -26,18 +26,17 @@ export default function ProductContainer() {
         </p>
       )}
 
-      {data && data.data.products.length === 0 && (
+      {data?.data?.products?.length === 0 && (
         <p className="w-fit text-gray-500 bg-gray-50 px-2.5 py-1.5 mx-auto rounded-md">
           No products found.
         </p>
       )}
 
-      {data && data.data.products.length > 0 && (
+      {data?.data?.products?.length > 0 && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {data &&
-            data.data.products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+          {data?.data?.products?.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
         </div>
       )}
 

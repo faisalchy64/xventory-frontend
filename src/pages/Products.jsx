@@ -49,22 +49,21 @@ export default function Products() {
         </p>
       )}
 
-      {data && data.data.products.length === 0 && (
+      {data?.data?.products?.length === 0 && (
         <p className="w-fit text-gray-500 bg-gray-50 px-2.5 py-1.5 mx-auto rounded-md">
           No products found.
         </p>
       )}
 
-      {data && data.data.products.length > 0 && (
+      {data?.data?.products?.length > 0 && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3.5">
-          {data &&
-            data.data.products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+          {data?.data?.products?.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
         </div>
       )}
 
-      {data && data.data.products.length > 0 && (
+      {data?.data?.products?.length > 0 && (
         <div className="flex items-center gap-2.5">
           <button
             className="btn btn-sm btn-primary"
@@ -76,10 +75,10 @@ export default function Products() {
           <button className="btn btn-sm text-gray-500">{page}</button>
           <button
             className="btn btn-sm btn-primary"
-            disabled={Math.ceil(data.data.total / 6) === page}
+            disabled={Math.ceil(data?.data?.total / 6) === page}
             onClick={() =>
               setPage(
-                (prev) => Math.ceil(data.data.total / 6) > prev && prev + 1
+                (prev) => Math.ceil(data?.data?.total / 6) > prev && prev + 1
               )
             }
           >
