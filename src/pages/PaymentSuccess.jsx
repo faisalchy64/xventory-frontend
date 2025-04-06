@@ -1,8 +1,9 @@
 import { useSearchParams, Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import useApiPrivate from "../hooks/useApiPrivate";
-import { getCheckoutSession } from "../apis/order";
 import Loading from "../components/Loading";
+import Error from "../components/Error";
+import { getCheckoutSession } from "../apis/order";
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
@@ -24,11 +25,7 @@ export default function PaymentSuccess() {
           <div className="card-body items-center">
             {error && (
               <>
-                <p className="text-base text-center text-red-500">
-                  {error.status
-                    ? error.response.data.message
-                    : "There is a connection error."}
-                </p>
+                <Error error={error} />
 
                 <Link to="/" className="btn btn-block btn-primary text-base">
                   Continue shopping

@@ -74,3 +74,8 @@ export const deleteUser = async ({ apiPrivate, _id }) => {
   const { data } = await apiPrivate.delete(`/manage-users/${_id}`);
   return data;
 };
+
+export const updateProfile = async ({ apiPrivate, _id, form }) => {
+  const { data } = await apiPrivate.patch(`/profile/${_id}`, form);
+  return data;
+};

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import Error from "../components/Error";
 import { forgotPassword } from "../apis/user";
 
 export default function ForgotPassword() {
@@ -42,13 +43,7 @@ export default function ForgotPassword() {
             reset your password.
           </p>
 
-          {error && (
-            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-              {error.status
-                ? error.response.data.message
-                : "There is a connection error."}
-            </p>
-          )}
+          {error && <Error error={error} />}
 
           <form
             className="flex flex-col gap-2.5"

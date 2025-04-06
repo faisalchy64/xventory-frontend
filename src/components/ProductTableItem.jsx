@@ -1,8 +1,17 @@
 export default function ProductTableItem({ product, setEdit, setRemove }) {
-  const { _id, name, quantity, price, seller } = product;
+  const { _id, name, image, quantity, price, seller } = product;
 
   return (
     <tr>
+      <td>
+        <div className="size-8 rounded-md overflow-hidden">
+          <img
+            src={image.optimize_url}
+            alt={name}
+            className="size-full object-cover"
+          />
+        </div>
+      </td>
       <td>{_id}</td>
       <td>{seller}</td>
       <td className="capitalize text-nowrap">{name}</td>

@@ -1,8 +1,27 @@
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../hooks/useAuth";
+import useApiPrivate from "../hooks/useApiPrivate";
+import Error from "./Error";
+import Empty from "./Empty";
+import OrderTableItem from "../components/OrderTableItem";
+import TableItemSkeleton from "../ux/TableItemSkeleton";
+import Modal from "../components/Modal";
+import OrderDialog from "../components/OrderDialog";
+import { manageOrders } from "../apis/order";
 import products from "../assets/products.png";
 import orders from "../assets/orders.png";
 import users from "../assets/users.png";
 
 export default function AdminRoot() {
+  const [view, setView] = useState({ isOpen: false, data: null });
+  const { auth } = useAuth();
+  const apiPrivate = useApiPrivate();
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["recent-orders", auth._id, 1],
+    queryFn: () => manageOrders(apiPrivate, auth._id, 1),
+  });
+
   return (
     <section className="w-4/5 flex flex-col gap-10 py-10 mx-auto">
       <h2 className="text-3xl font-bold text-gray-800">Dashboard Overview</h2>
@@ -42,50 +61,44 @@ export default function AdminRoot() {
       <div className="flex flex-col gap-3.5">
         <h2 className="text-xl font-bold text-gray-800">Recent Orders</h2>
 
-        <div className="bg-base-100 p-5 rounded-2xl shadow overflow-x-auto">
-          <table className="table">
-            {/* head */}
-            <thead>
-              <tr>
-                <th>User Id</th>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Price</th>
-              </tr>
-            </thead>
+        <div className="min-h-[390px] bg-base-100 p-5 rounded-2xl shadow overflow-x-auto">
+          {isLoading && <TableItemSkeleton />}
 
-            <tbody>
-              <tr>
-                <td className="text-nowrap">12345</td>
-                <td className="text-nowrap">Apple</td>
-                <td className="text-nowrap">150 KG</td>
-                <td className="text-nowrap">$100</td>
-              </tr>
+          {error && <Error error={error} />}
 
-              <tr>
-                <td className="text-nowrap">12345</td>
-                <td className="text-nowrap">Orange</td>
-                <td className="text-nowrap">200 KG</td>
-                <td className="text-nowrap">$150</td>
-              </tr>
+          {data?.data?.orders?.length === 0 && <Empty />}
 
-              <tr>
-                <td className="text-nowrap">12345</td>
-                <td className="text-nowrap">Mango</td>
-                <td className="text-nowrap">250 KG</td>
-                <td className="text-nowrap">$200</td>
-              </tr>
+          {data?.data?.orders?.length > 0 && (
+            <table className="table">
+              <thead className="text-sm uppercase text-gray-700">
+                <tr>
+                  <th>Order ID</th>
+                  <th>Amount</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
 
-              <tr>
-                <td className="text-nowrap">12345</td>
-                <td className="text-nowrap">Banana</td>
-                <td className="text-nowrap">150 DZ</td>
-                <td className="text-nowrap">$250</td>
-              </tr>
-            </tbody>
-          </table>
+              <tbody className="font-semibold text-gray-500">
+                {data?.data?.orders?.map((order) => (
+                  <OrderTableItem
+                    key={order._id}
+                    order={order}
+                    setView={setView}
+                  />
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
+
+      {view.isOpen && (
+        <Modal>
+          <OrderDialog view={view} setView={setView} />
+        </Modal>
+      )}
     </section>
   );
 }

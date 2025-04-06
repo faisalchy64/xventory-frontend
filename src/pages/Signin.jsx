@@ -3,9 +3,10 @@ import { useLocation, useNavigate, Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeClosed } from "lucide-react";
+import useAuth from "../hooks/useAuth";
+import Error from "../components/Error";
 import WithGoogle from "../components/WithGoogle";
 import { signin } from "../apis/user";
-import useAuth from "../hooks/useAuth";
 
 export default function Signin() {
   const [show, setShow] = useState(false);
@@ -42,13 +43,7 @@ export default function Signin() {
             Sign in to your account
           </h2>
 
-          {error && (
-            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-              {error.status
-                ? error.response.data.message
-                : "There is a connection error."}
-            </p>
-          )}
+          {error && <Error error={error} />}
 
           <form
             className="flex flex-col gap-2.5"

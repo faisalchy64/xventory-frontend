@@ -3,6 +3,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
 import useApiPrivate from "../hooks/useApiPrivate";
+import Error from "./Error";
 import { updateProduct } from "../apis/product";
 
 export default function ProductUpdateForm({ edit, setEdit }) {
@@ -42,7 +43,7 @@ export default function ProductUpdateForm({ edit, setEdit }) {
         return null;
       }
 
-      data[key] = payload[key];
+      return (data[key] = payload[key]);
     });
 
     for (const key in data) {
@@ -80,13 +81,7 @@ export default function ProductUpdateForm({ edit, setEdit }) {
           </button>
         </div>
 
-        {error && (
-          <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-            {error.status
-              ? error.response.data.message
-              : "There is a connection error."}
-          </p>
-        )}
+        {error && <Error error={error} />}
 
         <form
           className="h-[450px] flex flex-col gap-3.5 overflow-x-hidden overflow-y-auto"

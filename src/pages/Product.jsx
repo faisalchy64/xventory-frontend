@@ -3,8 +3,9 @@ import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { getProduct } from "../apis/product";
 import ProductSkeleton from "../ux/ProductSkeleton";
+import Error from "../components/Error";
+import { getProduct } from "../apis/product";
 
 export default function Product() {
   const [orderQty, setOrderQty] = useState(0);
@@ -47,13 +48,7 @@ export default function Product() {
     <section className="w-4/5 flex flex-col items-center gap-10 py-10 mx-auto">
       {isLoading && <ProductSkeleton />}
 
-      {error && (
-        <p className="w-fit text-red-500 bg-red-50 px-2.5 py-1.5 mx-auto rounded-md">
-          {error.status
-            ? error.response.data.message
-            : "There is a connection error."}
-        </p>
-      )}
+      {error && <Error error={error} />}
 
       {data && (
         <article className="card card-compact items-center bg-base-100 w-full md:flex-row rounded-none">

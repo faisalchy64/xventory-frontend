@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { Eye, EyeClosed } from "lucide-react";
+import Error from "../components/Error";
 import { resetPassword } from "../apis/user";
 
 export default function ResetPassword() {
@@ -43,13 +44,7 @@ export default function ResetPassword() {
             Enter the verification code sent to the email address you entered.
           </p>
 
-          {error && (
-            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-              {error.status
-                ? error.response.data.message
-                : "There is a connection error."}
-            </p>
-          )}
+          {error && <Error error={error} />}
 
           <form
             className="flex flex-col gap-2.5"

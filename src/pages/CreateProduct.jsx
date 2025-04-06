@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
+import Error from "../components/Error";
 import { createProduct } from "../apis/product";
 
 export default function CreateProduct() {
@@ -46,13 +47,7 @@ export default function CreateProduct() {
 
       <article className="card card-compact bg-base-100 w-full mx-auto shadow">
         <div className="card-body">
-          {error && (
-            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-              {error.status
-                ? error.response.data.message
-                : "There is a connection error."}
-            </p>
-          )}
+          {error && <Error error={error} />}
 
           <form
             className="flex flex-col gap-3.5"

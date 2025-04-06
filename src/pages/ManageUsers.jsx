@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
+import Error from "../components/Error";
+import Empty from "../components/Empty";
 import TableItemSkeleton from "../ux/TableItemSkeleton";
 import Modal from "../components/Modal";
 import RemoveDialog from "../components/RemoveDialog";
@@ -24,19 +26,9 @@ export default function ManageUsers() {
       <div className="min-h-[390px] bg-base-100 p-5 rounded-2xl shadow overflow-x-auto">
         {isLoading && <TableItemSkeleton />}
 
-        {error && (
-          <p className="w-fit text-red-500 bg-red-50 px-2.5 py-1.5 mx-auto rounded-md">
-            {error.status
-              ? error.response.data.message
-              : "There is a connection error."}
-          </p>
-        )}
+        {error && <Error error={error} />}
 
-        {data?.data?.users?.length === 0 && (
-          <p className="w-fit text-gray-500 bg-gray-50 px-2.5 py-1.5 mx-auto rounded-md">
-            No users found.
-          </p>
-        )}
+        {data?.data?.users?.length === 0 && <Empty />}
 
         {data?.data?.users?.length > 0 && (
           <table className="table">

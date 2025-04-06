@@ -1,6 +1,8 @@
 import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../apis/product";
+import Error from "./Error";
+import Empty from "./Empty";
 import ProductCard from "./ProductCard";
 import CardItemSkeleton from "../ux/CardItemSkeleton";
 
@@ -18,19 +20,9 @@ export default function ProductContainer() {
 
       {isLoading && <CardItemSkeleton />}
 
-      {error && (
-        <p className="w-fit text-red-500 bg-red-50 px-2.5 py-1.5 mx-auto rounded-md">
-          {error.status
-            ? error.response.data.message
-            : "There is a connection error."}
-        </p>
-      )}
+      {error && <Error error={error} />}
 
-      {data?.data?.products?.length === 0 && (
-        <p className="w-fit text-gray-500 bg-gray-50 px-2.5 py-1.5 mx-auto rounded-md">
-          No products found.
-        </p>
-      )}
+      {data?.data?.products?.length === 0 && <Empty />}
 
       {data?.data?.products?.length > 0 && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3.5">

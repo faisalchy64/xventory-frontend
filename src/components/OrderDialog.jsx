@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
+import Error from "./Error";
 import { updateOrder } from "../apis/order";
 
 export default function OrderDialog({ view, setView }) {
@@ -79,13 +80,7 @@ export default function OrderDialog({ view, setView }) {
             </button>
           </div>
 
-          {error && (
-            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-              {error.status
-                ? error.response.data.message
-                : "There is a connection error."}
-            </p>
-          )}
+          {error && <Error error={error} />}
 
           {active === "Order" && (
             <div className="grid md:grid-cols-3 gap-2.5 py-5">

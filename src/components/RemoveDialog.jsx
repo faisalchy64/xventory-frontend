@@ -2,6 +2,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
 import useApiPrivate from "../hooks/useApiPrivate";
+import Error from "./Error";
 
 export default function RemoveDialog({
   title,
@@ -41,13 +42,7 @@ export default function RemoveDialog({
           </button>
         </div>
 
-        {error && (
-          <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-            {error.status
-              ? error.response.data.message
-              : "There is a connection error."}
-          </p>
-        )}
+        {error && <Error error={error} />}
 
         <h3 className="text-base font-semibold text-center text-gray-700">
           Are you sure you want to perform this action?

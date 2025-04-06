@@ -24,6 +24,7 @@ import CreateProduct from "./pages/CreateProduct";
 import Profile from "./pages/Profile";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentFailed from "./pages/PaymentFailed";
+import NotFound from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -68,6 +69,8 @@ export default function App() {
         <Route path="/success" element={<PaymentSuccess />} />
         <Route path="/cancel" element={<PaymentFailed />} />
       </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
