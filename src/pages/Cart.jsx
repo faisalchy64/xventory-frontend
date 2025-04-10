@@ -50,13 +50,14 @@ export default function Cart() {
     const data = await mutateAsync({ apiPrivate, payload });
 
     if (data?.status === 201) {
+      localStorage.removeItem("cart");
+
       info.method === "card" &&
         (await createCheckoutSession({
           apiPrivate,
           payload: { cart, orderId: data.data._id },
         }));
 
-      localStorage.removeItem("cart");
       setCart([]);
       toast.success("Order created successfully.");
     }
