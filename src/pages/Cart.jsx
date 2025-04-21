@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, Trash } from "lucide-react";
+import toast from "react-hot-toast";
 import useAuth from "../hooks/useAuth";
 import useApiPrivate from "../hooks/useApiPrivate";
 import { createOrder, createCheckoutSession } from "../apis/order";
-import toast from "react-hot-toast";
+import Error from "../components/Error";
+import Empty from "../components/Empty";
 
 export default function Cart() {
   const [cart, setCart] = useState([]);
@@ -96,6 +98,12 @@ export default function Cart() {
     });
   };
 
+  const remove = (id) => {
+    const updatedCart = cart.filter((product) => product._id !== id);
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
@@ -108,19 +116,9 @@ export default function Cart() {
 
       <div className="w-full grid md:grid-cols-2 gap-3.5">
         <div className="w-full flex flex-col gap-3.5">
-          {error && (
-            <p className="text-center text-red-500 bg-red-50 px-2.5 py-1.5 rounded-md">
-              {error.status
-                ? error.response.data.message
-                : "There is a connection error."}
-            </p>
-          )}
+          {error && <Error error={error} />}
 
-          {cart.length === 0 && (
-            <p className="text-center text-gray-500 bg-gray-50 px-2.5 py-1.5 rounded-md">
-              No cart products found.
-            </p>
-          )}
+          {cart.length === 0 && <Empty />}
 
           {cart.map((product) => (
             <article
@@ -165,6 +163,13 @@ export default function Cart() {
                     onClick={() => decrement(product._id)}
                   >
                     <Minus size={16} />
+                  </button>
+
+                  <button
+                    className="btn btn-sm btn-error text-base-200"
+                    onClick={() => remove(product._id)}
+                  >
+                    <Trash size={16} />
                   </button>
                 </div>
               </div>
